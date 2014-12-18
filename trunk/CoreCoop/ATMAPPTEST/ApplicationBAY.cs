@@ -13,7 +13,7 @@ using System.Threading;
 
 namespace ATMAPPTEST
 {
-    public partial class Form1 : Form
+    public partial class ApplicationBAY : Form
     {
         private String DataMassage = String.Empty;
         private int Step = 0;
@@ -23,7 +23,7 @@ namespace ATMAPPTEST
         private int page3 = 0;
         private int page4 = 0;
         private String url = "http://127.0.0.1/AtmCoreCoopBAY/ATMBAY/ATMcore.aspx";
-        public Form1()
+        public ApplicationBAY()
         {
             InitializeComponent();
             StepFirst();
