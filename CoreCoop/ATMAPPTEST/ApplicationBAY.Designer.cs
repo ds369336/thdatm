@@ -1,6 +1,6 @@
 ﻿namespace ATMAPPTEST
 {
-    partial class Form1
+    partial class ApplicationBAY
     {
         /// <summary>
         /// Required designer variable.
@@ -382,7 +382,7 @@
             this.TB_MEMBER_NO.Size = new System.Drawing.Size(105, 20);
             this.TB_MEMBER_NO.TabIndex = 22;
             // 
-            // Form1
+            // Application
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -409,8 +409,8 @@
             this.Controls.Add(this.TB_Send);
             this.Controls.Add(this.submit);
             this.Controls.Add(this.panel1);
-            this.Name = "Form1";
-            this.Text = "Form1";
+            this.Name = "Application";
+            this.Text = "Application";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
