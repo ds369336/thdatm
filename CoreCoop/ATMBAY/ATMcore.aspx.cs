@@ -45,7 +45,7 @@ namespace ATMBAY
                 //จัดการข้อมูล
                 DataEncode DataRequest = new DataEncode(DataMassage);
                 DataEncode DataResponse = DataRequest;
-                
+
                 //ตรวจสอบ Request
                 switch (DataRequest.TransactionMessageCode)
                 {
@@ -55,12 +55,12 @@ namespace ATMBAY
                         if (DataRequest.FromAccountCode == 14) //COOP Deposit Account [ถามยอดเงินฝาก]
                         {
                             //Result = "MODE : Balance Inquiry >> COOP Deposit Account";
-                            Inq.DeptInquiry(DataResponse.PANNumber, ref DataResponse.Amount2, ref DataResponse.Amount3);
+                            Inq.DeptInquiry(DataResponse.COOPCustomerID.ToString("00000000"), ref DataResponse.Amount2, ref DataResponse.Amount3);
                         }
                         else if (DataRequest.FromAccountCode == 34) //COOP Loan Account [ถามยอดเงินกู้]
                         {
                             //Result = "MODE : Balance Inquiry >> COOP Loan Account";
-                            Inq.LoanInquiry(DataResponse.PANNumber, ref DataResponse.Amount2, ref DataResponse.Amount3);
+                            Inq.LoanInquiry(DataResponse.COOPCustomerID.ToString("00000000"), ref DataResponse.Amount2, ref DataResponse.Amount3);
                         }
                         break;
                     case "0100": // Account Name Inquiry [ถามชื่อบัญชี]
@@ -74,21 +74,21 @@ namespace ATMBAY
                         DataResponse.TransactionMessageCode = "210";
                         if (DataRequest.FromAccountCode == 42) //Fund transfer from COOP A/C TO Bank A/C [โอนจากสหกรณ์ไปธนาคาร]
                         {
-
+                            Result = "MODE : Money Withdraw >> COOP Deposit Account";
                         }
                         else if (DataRequest.FromAccountCode == 43) //Fund transfer from Bank A/C TO COOP A/C [Coop Loan Payment] [โอนจากธนาคารไปสหกรณ์ ใช้ชำระหนี้]
                         {
-
+                            Result = "MODE : Fund Transfer >> COOP Loan Payment";
                         }
                         else if (DataRequest.FromAccountCode == 10) //Cash Withdraw [ถอนเงินสด]
                         {
-
+                            Result = "MODE : Balance Inquiry >> COOP Cash Withdraw";
                         }
                         break;
                     default: break;
                 }
-                DataRequest.InsertATMACT();//บันทึกลงตาราง ATMACT เก็บ LOG การ Request
-                DataResponse.InsertATMACT();//บันทึกลงตาราง ATMACT เก็บ LOG การ Response
+                //DataRequest.InsertATMACT();//บันทึกลงตาราง ATMACT เก็บ LOG การ Request
+                //DataResponse.InsertATMACT();//บันทึกลงตาราง ATMACT เก็บ LOG การ Response
                 Result = DataResponse.DataMassage;
 
                 //XmlService x = new XmlService();

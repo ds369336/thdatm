@@ -22,7 +22,7 @@ namespace ATMAPPTEST
         private int page2 = 0;
         private int page3 = 0;
         private int page4 = 0;
-        private String url = "http://127.0.0.1/CORECOOP/ATMBAY/ATMcore.aspx";
+        private String url = "http://127.0.0.1/AtmCoreCoopBAY/ATMBAY/ATMcore.aspx";
         public Form1()
         {
             InitializeComponent();
@@ -79,6 +79,7 @@ namespace ATMAPPTEST
             catch (Exception ex)
             {
                 TB_Exception.Text = ex.Message;
+                WriteLog(ex.Message);
             }
         }
 
@@ -105,6 +106,7 @@ namespace ATMAPPTEST
             catch (Exception ex)
             {
                 TB_Exception.Text = ex.Message;
+                WriteLog(ex.Message);
             }
         }
 
@@ -147,6 +149,7 @@ namespace ATMAPPTEST
             catch (Exception ex)
             {
                 TB_Exception.Text = ex.Message;
+                WriteLog(ex.Message);
             }
         }
 
@@ -224,6 +227,7 @@ namespace ATMAPPTEST
             catch (Exception ex)
             {
                 TB_Exception.Text = ex.Message;
+                WriteLog(ex.Message);
             }
         }
 
@@ -308,8 +312,17 @@ namespace ATMAPPTEST
                 Data.TerminalSequenceNo = Convert.ToUInt32(TB_TRACE_NUMBER.Text);
                 Data.AcquirerTraceNumber = 0;
 
+                uint COOPCustomerID = 0;
+                try
+                {
+                    COOPCustomerID = Convert.ToUInt32(TB_MEMBER_NO.Text);
+                }
+                catch
+                {
+                    throw new Exception("กรุณาระบุเลขที่สมาชิกเป็นตัวเลขเท่านั้น");
+                }
                 Data.COOPFIID = "";
-                Data.COOPCustomerID = 0;
+                Data.COOPCustomerID = COOPCustomerID;
                 Data.COOPCustomerAC = 0;
                 Data.COOPBankAC = 0;
                 Data.COOPCustomerBankAC = 0;
@@ -326,11 +339,11 @@ namespace ATMAPPTEST
 
                 String Input = Data.DataMassage;
                 WriteLog("=================== DataMassage ===================");
-                WriteLog(Input);
-                WriteLog("DataMassage Length = " + Input.Length);
+                WriteLog("Request :" + Input);
                 String Output = SendData(Input);
                 CheckOutput(ref Output);
-                WriteLog(Output);
+                WriteLog("Response:" + Output);
+                WriteLog("===================================================");
                 Data = new DataEncode(Output);
                 TBM_01.Text = "ยอดเงินที่สามารถถอนได้ " + Data.Amount2.ToString("#,##0.00");
                 TBM_02.Text = "ยอดเงินคงเหลือทั้งหมด " + Data.Amount2.ToString("#,##0.00");
@@ -387,11 +400,11 @@ namespace ATMAPPTEST
 
                 String Input = Data.DataMassage;
                 WriteLog("=================== DataMassage ===================");
-                WriteLog(Input);
-                WriteLog("DataMassage Length = " + Input.Length);
+                WriteLog("Request :" + Input);
                 String Output = SendData(Input);
                 CheckOutput(ref Output);
-                WriteLog(Output);
+                WriteLog("Response:" + Output);
+                WriteLog("===================================================");
                 Data = new DataEncode(Output);
                 TBM_01.Text = "ยอดเงินที่สามารถกู้ได้ " + Data.Amount2.ToString("#,##0.00");
                 TBM_02.Text = "ยอดเงินคงเหลือทั้งหมด " + Data.Amount2.ToString("#,##0.00");
@@ -448,11 +461,11 @@ namespace ATMAPPTEST
 
                 String Input = Data.DataMassage;
                 WriteLog("=================== DataMassage ===================");
-                WriteLog(Input);
-                WriteLog("DataMassage Length = " + Input.Length);
+                WriteLog("Request :" + Input);
                 String Output = SendData(Input);
                 CheckOutput(ref Output);
-                WriteLog(Output);
+                WriteLog("Response:" + Output);
+                WriteLog("===================================================");
                 Data = new DataEncode(Output);
             }
             catch (Exception ex)
@@ -460,7 +473,7 @@ namespace ATMAPPTEST
                 throw ex;
             }
         }
-        
+
         private void WriteLog(String Massage)
         {
             try
@@ -497,6 +510,7 @@ namespace ATMAPPTEST
             catch (Exception ex)
             {
                 TB_Exception.Text = ex.Message;
+                WriteLog(ex.Message);
             }
         }
 
@@ -504,33 +518,15 @@ namespace ATMAPPTEST
         {
             try
             {
-                String DataSend = "TestWCF";
-                String Result = String.Empty;
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url + "?DataMassage=" + DataSend);
-                request.UserAgent = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; .NET CLR 1.0.3705)";
-                request.Method = "POST";
-                request.GetRequestStream();
-
-                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-
-                using (StreamReader reader = new StreamReader(response.GetResponseStream()))
-                {
-                    Result = reader.ReadToEnd().Trim();
-                }
-                if (Result == "1")
-                {
-                    LB_Status.Text = "Online";
-                }
-                else
-                {
-                    LB_Status.Text = "Offline";
-                }
+                TB_COREURL.Text = url;
+                CheckUrl(url);
 
                 TB_ATMCARD_ID.Text = "0123456789";
                 DT_OPERATE_DATE.Value = DateTime.Now;
                 DT_OPERATE_DATE.Format = DateTimePickerFormat.Short;
                 TB_ATM_NO.Text = "BAY001";
                 TB_TRACE_NUMBER.Text = "1";
+                TB_MEMBER_NO.Text = "00001222";
 
                 TBM_01.Text = "";
                 TBM_02.Text = "";
@@ -538,6 +534,7 @@ namespace ATMAPPTEST
             catch (Exception ex)
             {
                 TB_Exception.Text = ex.Message;
+                WriteLog(ex.Message);
             }
         }
 
@@ -657,16 +654,28 @@ namespace ATMAPPTEST
         {
             try
             {
-
                 url = TB_COREURL.Text;
-                WriteLog(url);
+                CheckUrl(url);
+            }
+            catch (Exception ex)
+            {
+                TB_Exception.Text = ex.Message;
+                WriteLog(ex.Message);
+            }
+        }
+
+        private void CheckUrl(String StringURL)
+        {
+            try
+            {
+                WriteLog(StringURL);
                 String DataSend = "TestWCF";
                 String Result = SendData(DataSend);
 
                 if (Result == "1")
                 {
                     LB_Status.Text = "Online";
-                    WriteLog("Result = "+Result + " : Online");
+                    WriteLog("Result = " + Result + " : Online");
                 }
                 else
                 {
@@ -677,11 +686,9 @@ namespace ATMAPPTEST
             }
             catch (Exception ex)
             {
-                TB_Exception.Text = ex.Message;
+                throw ex;
             }
         }
-
-
 
     }
 }

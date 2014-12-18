@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
+            this.TB_ITEM_AMT = new System.Windows.Forms.TextBox();
+            this.TBM_02 = new System.Windows.Forms.TextBox();
             this.TBM_01 = new System.Windows.Forms.TextBox();
             this.bt8 = new System.Windows.Forms.Button();
             this.bt7 = new System.Windows.Forms.Button();
@@ -54,11 +56,11 @@
             this.DT_OPERATE_DATE = new System.Windows.Forms.DateTimePicker();
             this.label5 = new System.Windows.Forms.Label();
             this.TB_TRACE_NUMBER = new System.Windows.Forms.TextBox();
-            this.TBM_02 = new System.Windows.Forms.TextBox();
-            this.TB_ITEM_AMT = new System.Windows.Forms.TextBox();
             this.TB_COREURL = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.BT_CHECK_WCF = new System.Windows.Forms.Button();
+            this.label7 = new System.Windows.Forms.Label();
+            this.TB_MEMBER_NO = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -81,6 +83,26 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(390, 281);
             this.panel1.TabIndex = 0;
+            // 
+            // TB_ITEM_AMT
+            // 
+            this.TB_ITEM_AMT.Location = new System.Drawing.Point(144, -2);
+            this.TB_ITEM_AMT.Name = "TB_ITEM_AMT";
+            this.TB_ITEM_AMT.Size = new System.Drawing.Size(100, 20);
+            this.TB_ITEM_AMT.TabIndex = 19;
+            this.TB_ITEM_AMT.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.TB_ITEM_AMT.Visible = false;
+            // 
+            // TBM_02
+            // 
+            this.TBM_02.Cursor = System.Windows.Forms.Cursors.Default;
+            this.TBM_02.Location = new System.Drawing.Point(2, 129);
+            this.TBM_02.Name = "TBM_02";
+            this.TBM_02.ReadOnly = true;
+            this.TBM_02.Size = new System.Drawing.Size(382, 20);
+            this.TBM_02.TabIndex = 10;
+            this.TBM_02.Text = "Text2";
+            this.TBM_02.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // TBM_01
             // 
@@ -318,33 +340,12 @@
             this.TB_TRACE_NUMBER.Size = new System.Drawing.Size(105, 20);
             this.TB_TRACE_NUMBER.TabIndex = 17;
             // 
-            // TBM_02
-            // 
-            this.TBM_02.Cursor = System.Windows.Forms.Cursors.Default;
-            this.TBM_02.Location = new System.Drawing.Point(2, 129);
-            this.TBM_02.Name = "TBM_02";
-            this.TBM_02.ReadOnly = true;
-            this.TBM_02.Size = new System.Drawing.Size(382, 20);
-            this.TBM_02.TabIndex = 10;
-            this.TBM_02.Text = "Text2";
-            this.TBM_02.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // TB_ITEM_AMT
-            // 
-            this.TB_ITEM_AMT.Location = new System.Drawing.Point(144, -2);
-            this.TB_ITEM_AMT.Name = "TB_ITEM_AMT";
-            this.TB_ITEM_AMT.Size = new System.Drawing.Size(100, 20);
-            this.TB_ITEM_AMT.TabIndex = 19;
-            this.TB_ITEM_AMT.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.TB_ITEM_AMT.Visible = false;
-            // 
             // TB_COREURL
             // 
             this.TB_COREURL.Location = new System.Drawing.Point(103, 12);
             this.TB_COREURL.Name = "TB_COREURL";
             this.TB_COREURL.Size = new System.Drawing.Size(338, 20);
             this.TB_COREURL.TabIndex = 19;
-            this.TB_COREURL.Text = "http://127.0.0.1/CORECOOP/ATMBAY/ATMcore.aspx";
             // 
             // label6
             // 
@@ -365,11 +366,29 @@
             this.BT_CHECK_WCF.UseVisualStyleBackColor = true;
             this.BT_CHECK_WCF.Click += new System.EventHandler(this.BT_CHECK_WCF_Click);
             // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(743, 9);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(69, 13);
+            this.label7.TabIndex = 23;
+            this.label7.Text = "เลขที่สมาชิก :";
+            // 
+            // TB_MEMBER_NO
+            // 
+            this.TB_MEMBER_NO.Location = new System.Drawing.Point(818, 6);
+            this.TB_MEMBER_NO.Name = "TB_MEMBER_NO";
+            this.TB_MEMBER_NO.Size = new System.Drawing.Size(105, 20);
+            this.TB_MEMBER_NO.TabIndex = 22;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(935, 499);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.TB_MEMBER_NO);
             this.Controls.Add(this.BT_CHECK_WCF);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.TB_COREURL);
@@ -433,6 +452,8 @@
         private System.Windows.Forms.TextBox TB_COREURL;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button BT_CHECK_WCF;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox TB_MEMBER_NO;
     }
 }
 
