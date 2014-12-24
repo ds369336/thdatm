@@ -13,12 +13,16 @@ namespace ATMBAY
     {
         protected String Result = String.Empty;
         WebUtility WebUtil = new WebUtility();
+        LogMessage Log = new LogMessage();
 
         protected void Page_Load(object sender, EventArgs e)
         {
             try
             {
+                String FileName = DateTime.Now.ToString("yyyyMMdd") + ".txt";
+
                 String DataMassage = Request["DataMassage"];
+                Log.WriteLog("Request:" + DataMassage, FileName);
                 //เชค Online ใน AppTest
                 if (DataMassage == "TestWCF")
                 {
@@ -27,8 +31,8 @@ namespace ATMBAY
                 }
                 else if (DataMassage == "test")
                 {
-                    LogMessage Log = new LogMessage();
-                    Log.WriteLog("");
+
+                    Log.WriteLog("", "TEST.txt");
                     return;
                 }
                 //ตรวจสอบข้อมูล
@@ -54,31 +58,31 @@ namespace ATMBAY
                         Inquiry Inq = new Inquiry();
                         if (DataRequest.FromAccountCode == 14) //COOP Deposit Account [ถามยอดเงินฝาก]
                         {
-                            Result = "MODE : Balance Inquiry >> COOP Deposit Account";
+                            //Result = "MODE : Balance Inquiry >> COOP Deposit Account";
                             //Inq.DeptInquiry(DataResponse.COOPCustomerID.ToString("00000000"), ref DataResponse.Amount2, ref DataResponse.Amount3);
                         }
                         else if (DataRequest.FromAccountCode == 34) //COOP Loan Account [ถามยอดเงินกู้]
                         {
-                            Result = "MODE : Balance Inquiry >> COOP Loan Account";
+                            //Result = "MODE : Balance Inquiry >> COOP Loan Account";
                             //Inq.LoanInquiry(DataResponse.COOPCustomerID.ToString("00000000"), ref DataResponse.Amount2, ref DataResponse.Amount3);
                         }
                         break;
                     case "0100": // Account Name Inquiry [ถามชื่อบัญชี]
-                        DataResponse.TransactionMessageCode = "110";
+                        DataResponse.TransactionMessageCode = "0110";
                         if (DataRequest.FromAccountCode == 31) //Fund transfer from COOP A/C TO Bank A/C
                         {
 
                         }
                         break;
                     case "0200": // Fund Transfer //Money Withdraw
-                        DataResponse.TransactionMessageCode = "210";
+                        DataResponse.TransactionMessageCode = "0210";
                         if (DataRequest.FromAccountCode == 42) //Fund transfer from COOP A/C TO Bank A/C [โอนจากสหกรณ์ไปธนาคาร]
                         {
-                            Result = "MODE : Money Withdraw >> COOP Deposit Account";
+                            //Result = "MODE : Money Withdraw >> COOP Deposit Account";
                         }
                         else if (DataRequest.FromAccountCode == 43) //Fund transfer from Bank A/C TO COOP A/C [Coop Loan Payment] [โอนจากธนาคารไปสหกรณ์ ใช้ชำระหนี้]
                         {
-                            Result = "MODE : Fund Transfer >> COOP Loan Payment";
+                            //Result = "MODE : Fund Transfer >> COOP Loan Payment";
                         }
                         else if (DataRequest.FromAccountCode == 10) //Cash Withdraw [ถอนเงินสด]
                         {
@@ -89,7 +93,10 @@ namespace ATMBAY
                 }
                 //DataRequest.InsertATMACT();//บันทึกลงตาราง ATMACT เก็บ LOG การ Request
                 //DataResponse.InsertATMACT();//บันทึกลงตาราง ATMACT เก็บ LOG การ Response
-                //Result = DataResponse.DataMassage;
+                Result = DataResponse.DataMassage;
+
+                Log.WriteLog("Response:" + Result, FileName);
+
 
                 //XmlService x = new XmlService();
                 //String connectionString = x.GetConnectionString();
