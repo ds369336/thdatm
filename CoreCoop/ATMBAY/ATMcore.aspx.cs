@@ -54,13 +54,13 @@ namespace ATMBAY
                         Inquiry Inq = new Inquiry();
                         if (DataRequest.FromAccountCode == 14) //COOP Deposit Account [ถามยอดเงินฝาก]
                         {
-                            //Result = "MODE : Balance Inquiry >> COOP Deposit Account";
-                            Inq.DeptInquiry(DataResponse.COOPCustomerID.ToString("00000000"), ref DataResponse.Amount2, ref DataResponse.Amount3);
+                            Result = "MODE : Balance Inquiry >> COOP Deposit Account";
+                            //Inq.DeptInquiry(DataResponse.COOPCustomerID.ToString("00000000"), ref DataResponse.Amount2, ref DataResponse.Amount3);
                         }
                         else if (DataRequest.FromAccountCode == 34) //COOP Loan Account [ถามยอดเงินกู้]
                         {
-                            //Result = "MODE : Balance Inquiry >> COOP Loan Account";
-                            Inq.LoanInquiry(DataResponse.COOPCustomerID.ToString("00000000"), ref DataResponse.Amount2, ref DataResponse.Amount3);
+                            Result = "MODE : Balance Inquiry >> COOP Loan Account";
+                            //Inq.LoanInquiry(DataResponse.COOPCustomerID.ToString("00000000"), ref DataResponse.Amount2, ref DataResponse.Amount3);
                         }
                         break;
                     case "0100": // Account Name Inquiry [ถามชื่อบัญชี]
@@ -89,7 +89,7 @@ namespace ATMBAY
                 }
                 //DataRequest.InsertATMACT();//บันทึกลงตาราง ATMACT เก็บ LOG การ Request
                 //DataResponse.InsertATMACT();//บันทึกลงตาราง ATMACT เก็บ LOG การ Response
-                Result = DataResponse.DataMassage;
+                //Result = DataResponse.DataMassage;
 
                 //XmlService x = new XmlService();
                 //String connectionString = x.GetConnectionString();

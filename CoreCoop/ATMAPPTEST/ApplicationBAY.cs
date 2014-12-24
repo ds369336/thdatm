@@ -203,7 +203,7 @@ namespace ATMAPPTEST
                             bt6.Text = "1000";
                             bt7.Text = "5000";
                             bt8.Text = "10000";
-                            TB_ITEM_AMT.Visible = true;
+                            ITEM_AMT.Visible = true;
                             //DeptInquiry();
                             break;
                         case 2: //ถอนเงิน >> บัญชีเงินกู้สหกรณ์
@@ -216,7 +216,7 @@ namespace ATMAPPTEST
                             bt6.Text = "1000";
                             bt7.Text = "5000";
                             bt8.Text = "10000";
-                            TB_ITEM_AMT.Visible = true;
+                            ITEM_AMT.Visible = true;
                             //LoanInquiry();
                             break;
                         case 3: break;
@@ -240,7 +240,7 @@ namespace ATMAPPTEST
                     switch (page3)
                     {
                         case 1:
-                            DeptWithdraw(Convert.ToDecimal(TB_ITEM_AMT));
+                            DeptWithdraw(Convert.ToDecimal(ITEM_AMT.Value));
                             break;
                         case 2:
                             DeptWithdraw(100);
@@ -415,7 +415,7 @@ namespace ATMAPPTEST
             }
         }
 
-        private void DeptWithdraw(Decimal Item_Amt)
+        private void  DeptWithdraw(Decimal Item_Amt)
         {
             try
             {
@@ -426,7 +426,7 @@ namespace ATMAPPTEST
                 Data.ServiceType = "ATMs";
 
                 Data.TransactionCode = 10;
-                Data.FromAccountCode = 14;
+                Data.FromAccountCode = 42;
 
                 Data.ToAccountCode = 0;
                 Data.TransactionDateTime = DT_OPERATE_DATE.Value;
@@ -555,6 +555,7 @@ namespace ATMAPPTEST
                     break;
                 case 2:
                     Step++;
+                    page3 = 1;
                     Step4();
                     break;
                 case 3:
@@ -688,6 +689,11 @@ namespace ATMAPPTEST
             {
                 throw ex;
             }
+        }
+
+        private void numericUpDown1_ValueChanged(object sender, EventArgs e)
+        {
+
         }
 
     }
