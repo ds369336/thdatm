@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
-            this.TB_ITEM_AMT = new System.Windows.Forms.TextBox();
             this.TBM_02 = new System.Windows.Forms.TextBox();
             this.TBM_01 = new System.Windows.Forms.TextBox();
             this.bt8 = new System.Windows.Forms.Button();
@@ -61,14 +60,16 @@
             this.BT_CHECK_WCF = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
             this.TB_MEMBER_NO = new System.Windows.Forms.TextBox();
+            this.ITEM_AMT = new System.Windows.Forms.NumericUpDown();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ITEM_AMT)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.SystemColors.Control;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.panel1.Controls.Add(this.TB_ITEM_AMT);
+            this.panel1.Controls.Add(this.ITEM_AMT);
             this.panel1.Controls.Add(this.TBM_02);
             this.panel1.Controls.Add(this.TBM_01);
             this.panel1.Controls.Add(this.bt8);
@@ -83,15 +84,6 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(390, 281);
             this.panel1.TabIndex = 0;
-            // 
-            // TB_ITEM_AMT
-            // 
-            this.TB_ITEM_AMT.Location = new System.Drawing.Point(144, -2);
-            this.TB_ITEM_AMT.Name = "TB_ITEM_AMT";
-            this.TB_ITEM_AMT.Size = new System.Drawing.Size(100, 20);
-            this.TB_ITEM_AMT.TabIndex = 19;
-            this.TB_ITEM_AMT.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.TB_ITEM_AMT.Visible = false;
             // 
             // TBM_02
             // 
@@ -382,7 +374,16 @@
             this.TB_MEMBER_NO.Size = new System.Drawing.Size(105, 20);
             this.TB_MEMBER_NO.TabIndex = 22;
             // 
-            // Application
+            // ITEM_AMT
+            // 
+            this.ITEM_AMT.Location = new System.Drawing.Point(137, -1);
+            this.ITEM_AMT.Name = "ITEM_AMT";
+            this.ITEM_AMT.Size = new System.Drawing.Size(120, 20);
+            this.ITEM_AMT.TabIndex = 24;
+            this.ITEM_AMT.Visible = false;
+            this.ITEM_AMT.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
+            // 
+            // ApplicationBAY
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -409,11 +410,12 @@
             this.Controls.Add(this.TB_Send);
             this.Controls.Add(this.submit);
             this.Controls.Add(this.panel1);
-            this.Name = "Application";
+            this.Name = "ApplicationBAY";
             this.Text = "Application";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ITEM_AMT)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -448,12 +450,12 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox TB_TRACE_NUMBER;
         private System.Windows.Forms.TextBox TBM_02;
-        private System.Windows.Forms.TextBox TB_ITEM_AMT;
         private System.Windows.Forms.TextBox TB_COREURL;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button BT_CHECK_WCF;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox TB_MEMBER_NO;
+        private System.Windows.Forms.NumericUpDown ITEM_AMT;
     }
 }
 
