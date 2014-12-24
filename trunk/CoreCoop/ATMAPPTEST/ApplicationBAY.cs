@@ -263,6 +263,34 @@ namespace ATMAPPTEST
                         default: break;
                     }
                 }
+                else if (page1 == 3 && page2 == 2)
+                {
+                    switch (page3)
+                    {
+                        case 1:
+                            LoanWithdraw(Convert.ToDecimal(ITEM_AMT.Value));
+                            break;
+                        case 2:
+                            LoanWithdraw(100);
+                            break;
+                        case 3:
+                            LoanWithdraw(100);
+                            break;
+                        case 5:
+                            LoanWithdraw(100);
+                            break;
+                        case 6:
+                            LoanWithdraw(100);
+                            break;
+                        case 7:
+                            LoanWithdraw(100);
+                            break;
+                        case 8:
+                            LoanWithdraw(1000);
+                            break;
+                        default: break;
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -339,7 +367,7 @@ namespace ATMAPPTEST
 
                 String Input = Data.DataMassage;
                 WriteLog("=================== DataMassage ===================");
-                WriteLog("Request :" + Input);
+                WriteLog("Request:" + Input);
                 String Output = SendData(Input);
                 CheckOutput(ref Output);
                 WriteLog("Response:" + Output);
@@ -400,7 +428,7 @@ namespace ATMAPPTEST
 
                 String Input = Data.DataMassage;
                 WriteLog("=================== DataMassage ===================");
-                WriteLog("Request :" + Input);
+                WriteLog("Request:" + Input);
                 String Output = SendData(Input);
                 CheckOutput(ref Output);
                 WriteLog("Response:" + Output);
@@ -415,7 +443,7 @@ namespace ATMAPPTEST
             }
         }
 
-        private void  DeptWithdraw(Decimal Item_Amt)
+        private void DeptWithdraw(Decimal Item_Amt)
         {
             try
             {
@@ -461,7 +489,66 @@ namespace ATMAPPTEST
 
                 String Input = Data.DataMassage;
                 WriteLog("=================== DataMassage ===================");
-                WriteLog("Request :" + Input);
+                WriteLog("Request:" + Input);
+                String Output = SendData(Input);
+                CheckOutput(ref Output);
+                WriteLog("Response:" + Output);
+                WriteLog("===================================================");
+                Data = new DataEncode(Output);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        private void LoanWithdraw(Decimal Item_Amt)
+        {
+            try
+            {
+                String ATMCARD_ID = TB_ATMCARD_ID.Text.Trim();
+                DataEncode Data = new DataEncode();
+                Data.TransactionMessageCode = "0200";
+
+                Data.ServiceType = "ATMs";
+
+                Data.TransactionCode = 10;
+                Data.FromAccountCode = 43;
+
+                Data.ToAccountCode = 0;
+                Data.TransactionDateTime = DT_OPERATE_DATE.Value;
+
+                Data.PANLength = 0;
+                Data.PANNumber = ATMCARD_ID;
+
+                Data.PINBlock = "";
+
+                Data.AcquirerTerminalNumber = TB_ATM_NO.Text;
+                Data.AcquirerTerminalLocation = "";
+                //Data.AcquirerTerminalOwner = "xxx"; //Defalt ไว้แล้ว
+                //Data.AcquirerTerminalCity = "xxx"; //Defalt ไว้แล้ว
+                Data.TerminalSequenceNo = Convert.ToUInt32(TB_TRACE_NUMBER.Text);
+                Data.AcquirerTraceNumber = 0;
+
+                Data.COOPFIID = "";
+                Data.COOPCustomerID = 0;
+                Data.COOPCustomerAC = 0;
+                Data.COOPBankAC = 0;
+                Data.COOPCustomerBankAC = 0;
+                Data.IssuerReference = "";
+
+                Data.Amount1 = Item_Amt;
+                Data.Amount2 = 0;
+                Data.Amount3 = 0;
+
+                Data.ResponseCode = 0;
+                Data.ReversalCode = 0;
+                Data.ApproveCode = 0;
+                Data.ResponseMessage = "";
+
+                String Input = Data.DataMassage;
+                WriteLog("=================== DataMassage ===================");
+                WriteLog("Request:" + Input);
                 String Output = SendData(Input);
                 CheckOutput(ref Output);
                 WriteLog("Response:" + Output);
@@ -583,7 +670,7 @@ namespace ATMAPPTEST
                 case 2:
                     Step++;
                     page3 = 2;
-                    Step3();
+                    Step4();
                     break;
             }
         }
@@ -599,6 +686,11 @@ namespace ATMAPPTEST
                     Step2(3);
                     break;
                 case 1: break;
+                case 2:
+                    Step++;
+                    page3 = 3;
+                    Step4();
+                    break;
             }
         }
 
@@ -628,22 +720,62 @@ namespace ATMAPPTEST
 
         private void bt5_Click(object sender, EventArgs e)
         {
-
+            switch (Step)
+            {
+                case 0:
+                    break;
+                case 1: break;
+                case 2:
+                    Step++;
+                    page3 = 5;
+                    Step4();
+                    break;
+            }
         }
 
         private void bt6_Click(object sender, EventArgs e)
         {
-
+            switch (Step)
+            {
+                case 0:
+                    break;
+                case 1: break;
+                case 2:
+                    Step++;
+                    page3 = 6;
+                    Step4();
+                    break;
+            }
         }
 
         private void bt7_Click(object sender, EventArgs e)
         {
-
+            switch (Step)
+            {
+                case 0:
+                    break;
+                case 1: break;
+                case 2:
+                    Step++;
+                    page3 = 7;
+                    Step4();
+                    break;
+            }
         }
 
         private void bt8_Click(object sender, EventArgs e)
         {
-
+            switch (Step)
+            {
+                case 0:
+                    break;
+                case 1: break;
+                case 2:
+                    Step++;
+                    page3 = 8;
+                    Step4();
+                    break;
+            }
         }
 
         private void BT_CLEAR_LOG_Click(object sender, EventArgs e)

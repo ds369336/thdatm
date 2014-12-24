@@ -14,7 +14,7 @@ namespace DataLibrary
         private string wsPath = "";
         private string savPath = "";
         private string ssoPath = "";
-        private string physicalPath = "C:\\GCOOP_ALL\\ATM_BANK\\CoreCoop";
+        private string physicalPath = "C:\\GCOOP_ALL\\AtmCoreCoopBAY\\CoreCoop";
 
         private DataTable dtXmlConfig = null;
 
