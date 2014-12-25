@@ -22,17 +22,12 @@ namespace ATMBAY
                 String FileName = DateTime.Now.ToString("yyyyMMdd") + ".txt";
 
                 String DataMassage = Request["DataMassage"];
-                Log.WriteLog("Request:" + DataMassage, FileName);
+                Log.WriteLog("Request :" + DataMassage, FileName);
                 //เชค Online ใน AppTest
                 if (DataMassage == "TestWCF")
                 {
                     Result = "1";
-                    return;
-                }
-                else if (DataMassage == "test")
-                {
-
-                    Log.WriteLog("", "TEST.txt");
+                    Log.WriteLog("Response:" + Result, FileName);
                     return;
                 }
                 //ตรวจสอบข้อมูล
@@ -56,37 +51,40 @@ namespace ATMBAY
                     case "0700": //Balance Inquiry
                         DataResponse.TransactionMessageCode = "0710";
                         Inquiry Inq = new Inquiry();
-                        if (DataRequest.FromAccountCode == 14) //COOP Deposit Account [ถามยอดเงินฝาก]
+                        if (DataRequest.TransactionCode == 30)
                         {
-                            //Result = "MODE : Balance Inquiry >> COOP Deposit Account";
-                            //Inq.DeptInquiry(DataResponse.COOPCustomerID.ToString("00000000"), ref DataResponse.Amount2, ref DataResponse.Amount3);
-                        }
-                        else if (DataRequest.FromAccountCode == 34) //COOP Loan Account [ถามยอดเงินกู้]
-                        {
-                            //Result = "MODE : Balance Inquiry >> COOP Loan Account";
-                            //Inq.LoanInquiry(DataResponse.COOPCustomerID.ToString("00000000"), ref DataResponse.Amount2, ref DataResponse.Amount3);
+                            if (DataRequest.FromAccountCode == 14) //COOP Deposit Account [ถามยอดเงินฝาก]
+                            {
+                                //Result = "MODE : Balance Inquiry >> COOP Deposit Account";
+                                //Inq.DeptInquiry(DataResponse.COOPCustomerID.ToString("00000000"), ref DataResponse.Amount2, ref DataResponse.Amount3);
+                            }
+                            else if (DataRequest.FromAccountCode == 34) //COOP Loan Account [ถามยอดเงินกู้]
+                            {
+                                //Result = "MODE : Balance Inquiry >> COOP Loan Account";
+                                //Inq.LoanInquiry(DataResponse.COOPCustomerID.ToString("00000000"), ref DataResponse.Amount2, ref DataResponse.Amount3);
+                            }
                         }
                         break;
                     case "0100": // Account Name Inquiry [ถามชื่อบัญชี]
                         DataResponse.TransactionMessageCode = "0110";
-                        if (DataRequest.FromAccountCode == 31) //Fund transfer from COOP A/C TO Bank A/C
+                        if (DataRequest.TransactionCode == 31) //To AC : name Query
                         {
-
+                            Result = "MODE : Account Name Inquiry";
                         }
                         break;
                     case "0200": // Fund Transfer //Money Withdraw
                         DataResponse.TransactionMessageCode = "0210";
-                        if (DataRequest.FromAccountCode == 42) //Fund transfer from COOP A/C TO Bank A/C [โอนจากสหกรณ์ไปธนาคาร]
+                        if (DataRequest.TransactionCode == 42) //Fund transfer from COOP A/C TO Bank A/C [โอนจากสหกรณ์>>>ไปธนาคาร]
                         {
                             //Result = "MODE : Money Withdraw >> COOP Deposit Account";
                         }
-                        else if (DataRequest.FromAccountCode == 43) //Fund transfer from Bank A/C TO COOP A/C [Coop Loan Payment] [โอนจากธนาคารไปสหกรณ์ ใช้ชำระหนี้]
+                        else if (DataRequest.TransactionCode == 43) //Fund transfer from Bank A/C TO COOP A/C [Coop Loan Payment] [โอนจากธนาคาร>>ไปสหกรณ์ ใช้ชำระหนี้]
                         {
                             //Result = "MODE : Fund Transfer >> COOP Loan Payment";
                         }
-                        else if (DataRequest.FromAccountCode == 10) //Cash Withdraw [ถอนเงินสด]
+                        else if (DataRequest.TransactionCode == 10) //Cash Withdraw [ถอนเงินสด]
                         {
-                            Result = "MODE : Balance Inquiry >> COOP Cash Withdraw";
+                            //Result = "MODE : Balance Inquiry >> COOP Cash Withdraw";
                         }
                         break;
                     default: break;
@@ -96,39 +94,6 @@ namespace ATMBAY
                 Result = DataResponse.DataMassage;
 
                 Log.WriteLog("Response:" + Result, FileName);
-
-
-                //XmlService x = new XmlService();
-                //String connectionString = x.GetConnectionString();
-                //Result = connectionString;
-                //Sta ta = new Sta(connectionString);
-                //ta.Transection();
-                //Sdt dt;
-                //ta.Exe("");
-                //XmlConfigSQL cfgSQL = new XmlConfigSQL();
-                //Result = cfgSQL.DepositInquiry;
-                //return;
-                //String SQLINQ = WebUtil.SQLFormat(cfgSQL.DepositInquiry, "");
-                //dt = ta.Query(SQLINQ);
-                //if (dt.Next())
-                //{
-                //    Result = dt.GetString("PRNCBAL");
-                //}
-                //return;
-                //Inquiry inq = new Inquiry();
-                //Decimal test = 0;
-                //Decimal test1 = 9;
-                //inq.DeptInquiry("0144", "0123456789", ref test, ref test1);
-                //Result = "[Complete] >> " + DataMassage;
-                //inq.DeptInquiry("0144", "0123456789", ref test, ref test1);
-                //return;
-                //ta.Commit(true);
-
-                //DataEndcode_.Amount2;
-                //String adw = Data.DataMassage;
-                //DataEncode A = new DataEncode(DataMassage);
-                //Result = DataMassage + " : Return";
-
             }
             catch (Exception ex)
             {
@@ -136,5 +101,37 @@ namespace ATMBAY
             }
 
         }
+
+
+        //XmlService x = new XmlService();
+        //String connectionString = x.GetConnectionString();
+        //Result = connectionString;
+        //Sta ta = new Sta(connectionString);
+        //ta.Transection();
+        //Sdt dt;
+        //ta.Exe("");
+        //XmlConfigSQL cfgSQL = new XmlConfigSQL();
+        //Result = cfgSQL.DepositInquiry;
+        //return;
+        //String SQLINQ = WebUtil.SQLFormat(cfgSQL.DepositInquiry, "");
+        //dt = ta.Query(SQLINQ);
+        //if (dt.Next())
+        //{
+        //    Result = dt.GetString("PRNCBAL");
+        //}
+        //return;
+        //Inquiry inq = new Inquiry();
+        //Decimal test = 0;
+        //Decimal test1 = 9;
+        //inq.DeptInquiry("0144", "0123456789", ref test, ref test1);
+        //Result = "[Complete] >> " + DataMassage;
+        //inq.DeptInquiry("0144", "0123456789", ref test, ref test1);
+        //return;
+        //ta.Commit(true);
+
+        //DataEndcode_.Amount2;
+        //String adw = Data.DataMassage;
+        //DataEncode A = new DataEncode(DataMassage);
+        //Result = DataMassage + " : Return";
     }
 }
