@@ -114,10 +114,10 @@ namespace ATMAPPTEST
         {
             try
             {
+                ClearBT();
                 switch (Function)
                 {
                     case 1://สอบถามยอด
-                        ClearBT();
                         bt1.Text = "บัญชีออมทรัพย์สหกรณ์";
                         bt2.Text = "บัญชีเงินกู้สหกรณ์";
                         //bt3.Text = "บัญชีออมทรัพย์ธนาคารกรุงศรี";
@@ -129,9 +129,8 @@ namespace ATMAPPTEST
                         bt7.Enabled = false;
                         bt8.Enabled = false;
                         break;
-                    case 2: break;
+                    case 2:
                     case 3: //ถอนเงิน
-                        ClearBT();
                         bt1.Text = "บัญชีออมทรัพย์สหกรณ์";
                         bt2.Text = "บัญชีเงินกู้สหกรณ์";
                         //bt3.Text = "บัญชีออมทรัพย์ธนาคารกรุงศรี";
@@ -143,7 +142,10 @@ namespace ATMAPPTEST
                         bt7.Enabled = false;
                         bt8.Enabled = false;
                         break;
-                    case 4: break;
+                    case 4:
+                        AccountInquiry();
+                        StepFirst();
+                        break;
                 }
             }
             catch (Exception ex)
@@ -189,7 +191,41 @@ namespace ATMAPPTEST
                         case 4: break;
                     }
                 }
-                if (page1 == 3)
+                else if (page1 == 2)
+                {
+                    switch (page2)
+                    {
+                        case 1: //ฝากเงิน >> บัญชีออมทรัพย์สหกรณ์
+                            ClearBT();
+                            bt1.Text = "ฝากเงินระบุจำนวน";
+                            bt2.Text = "100";
+                            bt3.Text = "200";
+                            bt4.Text = "ย้อนกลับ";
+                            bt5.Text = "500";
+                            bt6.Text = "1000";
+                            bt7.Text = "5000";
+                            bt8.Text = "10000";
+                            ITEM_AMT.Visible = true;
+                            //DeptInquiry();
+                            break;
+                        case 2: //ชำระเงิน >> บัญชีเงินกู้สหกรณ์
+                            ClearBT();
+                            bt1.Text = "ชำระเงินระบุจำนวน";
+                            bt2.Text = "100";
+                            bt3.Text = "200";
+                            bt4.Text = "ย้อนกลับ";
+                            bt5.Text = "500";
+                            bt6.Text = "1000";
+                            bt7.Text = "5000";
+                            bt8.Text = "10000";
+                            ITEM_AMT.Visible = true;
+                            //LoanInquiry();
+                            break;
+                        case 3: break;
+                        case 4: break;
+                    }
+                }
+                else if (page1 == 3)
                 {
                     switch (page2)
                     {
@@ -235,60 +271,54 @@ namespace ATMAPPTEST
         {
             try
             {
-                if (page1 == 3 && page2 == 1)
+                if (page1 == 2)
                 {
-                    switch (page3)
+                    if (page2 == 1)
                     {
-                        case 1:
-                            DeptWithdraw(Convert.ToDecimal(ITEM_AMT.Value));
-                            break;
-                        case 2:
-                            DeptWithdraw(100);
-                            break;
-                        case 3:
-                            DeptWithdraw(100);
-                            break;
-                        case 5:
-                            DeptWithdraw(100);
-                            break;
-                        case 6:
-                            DeptWithdraw(100);
-                            break;
-                        case 7:
-                            DeptWithdraw(100);
-                            break;
-                        case 8:
-                            DeptWithdraw(1000);
-                            break;
-                        default: break;
+                        if (page3 == 1) LoanWithdraw(Convert.ToDecimal(ITEM_AMT.Value));
+                        else if (page3 == 2) LoanWithdraw(100);
+                        else if (page3 == 3) LoanWithdraw(200);
+                        else if (page3 == 5) LoanWithdraw(500);
+                        else if (page3 == 6) LoanWithdraw(1000);
+                        else if (page3 == 7) LoanWithdraw(5000);
+                        else if (page3 == 8) LoanWithdraw(10000);
+                        StepFirst();
+                    }
+                    else if (page2 == 2)
+                    {
+                        if (page3 == 1) LoanWithdraw(Convert.ToDecimal(ITEM_AMT.Value));
+                        else if (page3 == 2) LoanWithdraw(100);
+                        else if (page3 == 3) LoanWithdraw(200);
+                        else if (page3 == 5) LoanWithdraw(500);
+                        else if (page3 == 6) LoanWithdraw(1000);
+                        else if (page3 == 7) LoanWithdraw(5000);
+                        else if (page3 == 8) LoanWithdraw(10000);
+                        StepFirst();
                     }
                 }
-                else if (page1 == 3 && page2 == 2)
+                else if (page1 == 3)
                 {
-                    switch (page3)
+                    if (page2 == 1)
                     {
-                        case 1:
-                            LoanWithdraw(Convert.ToDecimal(ITEM_AMT.Value));
-                            break;
-                        case 2:
-                            LoanWithdraw(100);
-                            break;
-                        case 3:
-                            LoanWithdraw(100);
-                            break;
-                        case 5:
-                            LoanWithdraw(100);
-                            break;
-                        case 6:
-                            LoanWithdraw(100);
-                            break;
-                        case 7:
-                            LoanWithdraw(100);
-                            break;
-                        case 8:
-                            LoanWithdraw(1000);
-                            break;
-                        default: break;
+                        if (page3 == 1) DeptWithdraw(Convert.ToDecimal(ITEM_AMT.Value));
+                        else if (page3 == 2) DeptWithdraw(100);
+                        else if (page3 == 3) DeptWithdraw(200);
+                        else if (page3 == 5) DeptWithdraw(500);
+                        else if (page3 == 6) DeptWithdraw(1000);
+                        else if (page3 == 7) DeptWithdraw(5000);
+                        else if (page3 == 8) DeptWithdraw(10000);
+                        StepFirst();
+                    }
+                    else if (page2 == 2)
+                    {
+                        if (page3 == 1) LoanWithdraw(Convert.ToDecimal(ITEM_AMT.Value));
+                        else if (page3 == 2) LoanWithdraw(100);
+                        else if (page3 == 3) LoanWithdraw(200);
+                        else if (page3 == 5) LoanWithdraw(500);
+                        else if (page3 == 6) LoanWithdraw(1000);
+                        else if (page3 == 7) LoanWithdraw(5000);
+                        else if (page3 == 8) LoanWithdraw(10000);
+                        StepFirst();
                     }
                 }
             }
@@ -320,7 +350,7 @@ namespace ATMAPPTEST
                 DataEncode Data = new DataEncode();
                 Data.TransactionMessageCode = "0700";
 
-                Data.ServiceType = "ATMs";
+                Data.ServiceType = "EATM";
 
                 Data.TransactionCode = 30;
                 Data.FromAccountCode = 14;
@@ -390,7 +420,7 @@ namespace ATMAPPTEST
                 DataEncode Data = new DataEncode();
                 Data.TransactionMessageCode = "0700";
 
-                Data.ServiceType = "ATMs";
+                Data.ServiceType = "EATM";
 
                 Data.TransactionCode = 30;
                 Data.FromAccountCode = 34;
@@ -443,6 +473,124 @@ namespace ATMAPPTEST
             }
         }
 
+        private void DeptDeposit(Decimal Item_Amt)
+        {
+            try
+            {
+                String ATMCARD_ID = TB_ATMCARD_ID.Text.Trim();
+                DataEncode Data = new DataEncode();
+                Data.TransactionMessageCode = "0200";
+
+                Data.ServiceType = "EATM";
+
+                Data.TransactionCode = 10;
+                Data.FromAccountCode = 42;
+
+                Data.ToAccountCode = 0;
+                Data.TransactionDateTime = DT_OPERATE_DATE.Value;
+
+                Data.PANLength = 0;
+                Data.PANNumber = ATMCARD_ID;
+
+                Data.PINBlock = "";
+
+                Data.AcquirerTerminalNumber = TB_ATM_NO.Text;
+                Data.AcquirerTerminalLocation = "";
+                //Data.AcquirerTerminalOwner = "xxx"; //Defalt ไว้แล้ว
+                //Data.AcquirerTerminalCity = "xxx"; //Defalt ไว้แล้ว
+                Data.TerminalSequenceNo = Convert.ToUInt32(TB_TRACE_NUMBER.Text);
+                Data.AcquirerTraceNumber = 0;
+
+                Data.COOPFIID = "";
+                Data.COOPCustomerID = 0;
+                Data.COOPCustomerAC = 0;
+                Data.COOPBankAC = 0;
+                Data.COOPCustomerBankAC = 0;
+                Data.IssuerReference = "";
+
+                Data.Amount1 = Item_Amt;
+                Data.Amount2 = 0;
+                Data.Amount3 = 0;
+
+                Data.ResponseCode = 0;
+                Data.ReversalCode = 0;
+                Data.ApproveCode = 0;
+                Data.ResponseMessage = "";
+
+                String Input = Data.DataMassage;
+                WriteLog("=================== DataMassage ===================");
+                WriteLog("Request:" + Input);
+                String Output = SendData(Input);
+                CheckOutput(ref Output);
+                WriteLog("Response:" + Output);
+                WriteLog("===================================================");
+                Data = new DataEncode(Output);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        private void LoanDeposit(Decimal Item_Amt)
+        {
+            try
+            {
+                String ATMCARD_ID = TB_ATMCARD_ID.Text.Trim();
+                DataEncode Data = new DataEncode();
+                Data.TransactionMessageCode = "0200";
+
+                Data.ServiceType = "EATM";
+
+                Data.TransactionCode = 10;
+                Data.FromAccountCode = 43;
+
+                Data.ToAccountCode = 0;
+                Data.TransactionDateTime = DT_OPERATE_DATE.Value;
+
+                Data.PANLength = 0;
+                Data.PANNumber = ATMCARD_ID;
+
+                Data.PINBlock = "";
+
+                Data.AcquirerTerminalNumber = TB_ATM_NO.Text;
+                Data.AcquirerTerminalLocation = "";
+                //Data.AcquirerTerminalOwner = "xxx"; //Defalt ไว้แล้ว
+                //Data.AcquirerTerminalCity = "xxx"; //Defalt ไว้แล้ว
+                Data.TerminalSequenceNo = Convert.ToUInt32(TB_TRACE_NUMBER.Text);
+                Data.AcquirerTraceNumber = 0;
+
+                Data.COOPFIID = "";
+                Data.COOPCustomerID = 0;
+                Data.COOPCustomerAC = 0;
+                Data.COOPBankAC = 0;
+                Data.COOPCustomerBankAC = 0;
+                Data.IssuerReference = "";
+
+                Data.Amount1 = Item_Amt;
+                Data.Amount2 = 0;
+                Data.Amount3 = 0;
+
+                Data.ResponseCode = 0;
+                Data.ReversalCode = 0;
+                Data.ApproveCode = 0;
+                Data.ResponseMessage = "";
+
+                String Input = Data.DataMassage;
+                WriteLog("=================== DataMassage ===================");
+                WriteLog("Request:" + Input);
+                String Output = SendData(Input);
+                CheckOutput(ref Output);
+                WriteLog("Response:" + Output);
+                WriteLog("===================================================");
+                Data = new DataEncode(Output);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         private void DeptWithdraw(Decimal Item_Amt)
         {
             try
@@ -451,7 +599,7 @@ namespace ATMAPPTEST
                 DataEncode Data = new DataEncode();
                 Data.TransactionMessageCode = "0200";
 
-                Data.ServiceType = "ATMs";
+                Data.ServiceType = "EATM";
 
                 Data.TransactionCode = 10;
                 Data.FromAccountCode = 42;
@@ -510,7 +658,7 @@ namespace ATMAPPTEST
                 DataEncode Data = new DataEncode();
                 Data.TransactionMessageCode = "0200";
 
-                Data.ServiceType = "ATMs";
+                Data.ServiceType = "EATM";
 
                 Data.TransactionCode = 10;
                 Data.FromAccountCode = 43;
@@ -538,6 +686,65 @@ namespace ATMAPPTEST
                 Data.IssuerReference = "";
 
                 Data.Amount1 = Item_Amt;
+                Data.Amount2 = 0;
+                Data.Amount3 = 0;
+
+                Data.ResponseCode = 0;
+                Data.ReversalCode = 0;
+                Data.ApproveCode = 0;
+                Data.ResponseMessage = "";
+
+                String Input = Data.DataMassage;
+                WriteLog("=================== DataMassage ===================");
+                WriteLog("Request:" + Input);
+                String Output = SendData(Input);
+                CheckOutput(ref Output);
+                WriteLog("Response:" + Output);
+                WriteLog("===================================================");
+                Data = new DataEncode(Output);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        private void AccountInquiry()
+        {
+            try
+            {
+                String ATMCARD_ID = TB_ATMCARD_ID.Text.Trim();
+                DataEncode Data = new DataEncode();
+                Data.TransactionMessageCode = "0100";
+
+                Data.ServiceType = "EATM";
+
+                Data.TransactionCode = 31;
+                Data.FromAccountCode = 43;
+
+                Data.ToAccountCode = 0;
+                Data.TransactionDateTime = DT_OPERATE_DATE.Value;
+
+                Data.PANLength = 0;
+                Data.PANNumber = ATMCARD_ID;
+
+                Data.PINBlock = "";
+
+                Data.AcquirerTerminalNumber = TB_ATM_NO.Text;
+                Data.AcquirerTerminalLocation = "";
+                //Data.AcquirerTerminalOwner = "xxx"; //Defalt ไว้แล้ว
+                //Data.AcquirerTerminalCity = "xxx"; //Defalt ไว้แล้ว
+                Data.TerminalSequenceNo = Convert.ToUInt32(TB_TRACE_NUMBER.Text);
+                Data.AcquirerTraceNumber = 0;
+
+                Data.COOPFIID = "";
+                Data.COOPCustomerID = 0;
+                Data.COOPCustomerAC = 0;
+                Data.COOPBankAC = 0;
+                Data.COOPCustomerBankAC = 0;
+                Data.IssuerReference = "";
+
+                Data.Amount1 = 0;
                 Data.Amount2 = 0;
                 Data.Amount3 = 0;
 
@@ -657,10 +864,10 @@ namespace ATMAPPTEST
             switch (Step)
             {
                 case 0:
-                    //Mode = 2;
+                    Mode = 2;
                     page1 = 2;
-                    //Step++;
-                    //Step2(2);
+                    Step++;
+                    Step2(2);
                     break;
                 case 1:
                     Step++;
@@ -699,8 +906,10 @@ namespace ATMAPPTEST
             switch (Step)
             {
                 case 0:
-                    Step2(4);
+                    Mode = 4;
+                    page1 = 4;
                     Step++;
+                    Step2(4);
                     break;
                 case 1:
                     StepFirst();
