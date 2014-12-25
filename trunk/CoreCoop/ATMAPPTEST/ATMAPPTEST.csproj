@@ -46,6 +46,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CertificateWebClient.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="DataEncode.cs" />
     <Compile Include="ApplicationBAY.cs">
       <SubType>Form</SubType>
@@ -53,6 +56,7 @@
     <Compile Include="ApplicationBAY.Designer.cs">
       <DependentUpon>ApplicationBAY.cs</DependentUpon>
     </Compile>
+    <Compile Include="MyPolicy.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="ApplicationBAY.resx">

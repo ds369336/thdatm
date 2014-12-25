@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using DataLibrary;
 using CoreCoopService;
+using System.Security.Cryptography.X509Certificates;
 
 namespace ATMBAY
 {
@@ -17,10 +18,9 @@ namespace ATMBAY
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            String FileName = DateTime.Now.ToString("yyyyMMdd") + ".txt";
             try
             {
-                String FileName = DateTime.Now.ToString("yyyyMMdd") + ".txt";
-
                 String DataMassage = Request["DataMassage"];
                 Log.WriteLog("Request :" + DataMassage, FileName);
                 //เชค Online ใน AppTest
@@ -98,6 +98,7 @@ namespace ATMBAY
             catch (Exception ex)
             {
                 Result = "[SERVER COOP] " + ex.Message;
+                Log.WriteLog("Response:" + Result, FileName);
             }
 
         }
