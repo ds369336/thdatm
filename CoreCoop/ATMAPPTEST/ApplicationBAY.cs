@@ -10,6 +10,7 @@ using System.Net;
 using System.Collections.Specialized;
 using System.IO;
 using System.Threading;
+using System.Security.Cryptography.X509Certificates;
 
 namespace ATMAPPTEST
 {
@@ -22,7 +23,7 @@ namespace ATMAPPTEST
         private int page2 = 0;
         private int page3 = 0;
         private int page4 = 0;
-        private String url = "http://127.0.0.1/AtmCoreCoopBAY/ATMBAY/ATMcore.aspx";
+        private String url = "https://127.0.0.1/AtmCoreCoopBAY/ATMBAY/ATMcore.aspx";
         public ApplicationBAY()
         {
             InitializeComponent();
@@ -33,13 +34,25 @@ namespace ATMAPPTEST
         {
             try
             {
+                //HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url + "?DataMassage=" + DataMassage);
+                //request.UserAgent = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; .NET CLR 1.0.3705)";
+                //request.Method = "POST";
+                //request.GetRequestStream();
+
+                //HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+
+                //using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+                //{
+                //    return reader.ReadToEnd();
+                //}
+                System.Net.ServicePointManager.CertificatePolicy = new MyPolicy();
+                X509Certificate2 Cert = new X509Certificate2(TB_CERT.Text, "1234", X509KeyStorageFlags.MachineKeySet);
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url + "?DataMassage=" + DataMassage);
-                request.UserAgent = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; .NET CLR 1.0.3705)";
+                request.ClientCertificates.Add(Cert);
                 request.Method = "POST";
                 request.GetRequestStream();
 
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-
                 using (StreamReader reader = new StreamReader(response.GetResponseStream()))
                 {
                     return reader.ReadToEnd();
@@ -786,20 +799,13 @@ namespace ATMAPPTEST
         {
             try
             {
-                String DataSend = TB_Send.Text.Trim();
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url + "?DataMassage=" + DataSend);
-                request.UserAgent = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; .NET CLR 1.0.3705)";
-                request.Method = "POST";
-                request.GetRequestStream();
-
-                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-
-                using (StreamReader reader = new StreamReader(response.GetResponseStream()))
-                {
-                    TB_Recv.Text = reader.ReadToEnd();
-                    WriteLog(reader.ReadToEnd());
-                }
-
+                String Input = TB_Send.Text;
+                WriteLog("=================== DataMassage ===================");
+                WriteLog("Request:" + Input);
+                String Output = SendData(Input);
+                CheckOutput(ref Output);
+                WriteLog("Response:" + Output);
+                WriteLog("===================================================");
             }
             catch (Exception ex)
             {
@@ -813,6 +819,7 @@ namespace ATMAPPTEST
             try
             {
                 TB_COREURL.Text = url;
+                TB_CERT.Text = "C:\\GCOOP_ALL\\AtmCoreCoopBAY\\Certificate\\Certificate_THD_client.pfx";
                 CheckUrl(url);
 
                 TB_ATMCARD_ID.Text = "0123456789";
@@ -1035,6 +1042,20 @@ namespace ATMAPPTEST
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void BT_SYSTEM_CHECK_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                WriteLog("================== System Check ===================");
+                WriteLog("Response:" + SendData(""));
+                WriteLog("===================================================");
+            }
+            catch (Exception ex)
+            {
+                TB_Exception.Text = ex.Message;
+            }
         }
 
     }

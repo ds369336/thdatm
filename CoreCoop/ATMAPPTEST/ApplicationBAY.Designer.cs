@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
+            this.ITEM_AMT = new System.Windows.Forms.NumericUpDown();
             this.TBM_02 = new System.Windows.Forms.TextBox();
             this.TBM_01 = new System.Windows.Forms.TextBox();
             this.bt8 = new System.Windows.Forms.Button();
@@ -44,8 +45,6 @@
             this.TB_LOG = new System.Windows.Forms.RichTextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.LB_Status = new System.Windows.Forms.Label();
-            this.TB_Recv = new System.Windows.Forms.RichTextBox();
-            this.TB_Send = new System.Windows.Forms.RichTextBox();
             this.TB_ATMCARD_ID = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -60,7 +59,10 @@
             this.BT_CHECK_WCF = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
             this.TB_MEMBER_NO = new System.Windows.Forms.TextBox();
-            this.ITEM_AMT = new System.Windows.Forms.NumericUpDown();
+            this.TB_Send = new System.Windows.Forms.TextBox();
+            this.BT_SYSTEM_CHECK = new System.Windows.Forms.Button();
+            this.label8 = new System.Windows.Forms.Label();
+            this.TB_CERT = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ITEM_AMT)).BeginInit();
             this.SuspendLayout();
@@ -85,24 +87,35 @@
             this.panel1.Size = new System.Drawing.Size(390, 281);
             this.panel1.TabIndex = 0;
             // 
+            // ITEM_AMT
+            // 
+            this.ITEM_AMT.Location = new System.Drawing.Point(137, -1);
+            this.ITEM_AMT.Name = "ITEM_AMT";
+            this.ITEM_AMT.Size = new System.Drawing.Size(120, 20);
+            this.ITEM_AMT.TabIndex = 24;
+            this.ITEM_AMT.Visible = false;
+            this.ITEM_AMT.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
+            // 
             // TBM_02
             // 
+            this.TBM_02.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.TBM_02.Cursor = System.Windows.Forms.Cursors.Default;
             this.TBM_02.Location = new System.Drawing.Point(2, 129);
             this.TBM_02.Name = "TBM_02";
             this.TBM_02.ReadOnly = true;
-            this.TBM_02.Size = new System.Drawing.Size(382, 20);
+            this.TBM_02.Size = new System.Drawing.Size(382, 13);
             this.TBM_02.TabIndex = 10;
             this.TBM_02.Text = "Text2";
             this.TBM_02.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // TBM_01
             // 
+            this.TBM_01.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.TBM_01.Cursor = System.Windows.Forms.Cursors.Default;
             this.TBM_01.Location = new System.Drawing.Point(1, 59);
             this.TBM_01.Name = "TBM_01";
             this.TBM_01.ReadOnly = true;
-            this.TBM_01.Size = new System.Drawing.Size(382, 20);
+            this.TBM_01.Size = new System.Drawing.Size(382, 13);
             this.TBM_01.TabIndex = 9;
             this.TBM_01.Text = "Text1";
             this.TBM_01.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -197,9 +210,9 @@
             // 
             // submit
             // 
-            this.submit.Location = new System.Drawing.Point(55, 110);
+            this.submit.Location = new System.Drawing.Point(447, 111);
             this.submit.Name = "submit";
-            this.submit.Size = new System.Drawing.Size(75, 23);
+            this.submit.Size = new System.Drawing.Size(69, 20);
             this.submit.TabIndex = 1;
             this.submit.Text = "Send";
             this.submit.UseVisualStyleBackColor = true;
@@ -227,7 +240,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 40);
+            this.label1.Location = new System.Drawing.Point(535, 159);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(91, 13);
             this.label1.TabIndex = 7;
@@ -236,27 +249,11 @@
             // LB_Status
             // 
             this.LB_Status.AutoSize = true;
-            this.LB_Status.Location = new System.Drawing.Point(100, 40);
+            this.LB_Status.Location = new System.Drawing.Point(623, 159);
             this.LB_Status.Name = "LB_Status";
             this.LB_Status.Size = new System.Drawing.Size(37, 13);
             this.LB_Status.TabIndex = 8;
             this.LB_Status.Text = "Offline";
-            // 
-            // TB_Recv
-            // 
-            this.TB_Recv.Location = new System.Drawing.Point(136, 110);
-            this.TB_Recv.Name = "TB_Recv";
-            this.TB_Recv.Size = new System.Drawing.Size(45, 21);
-            this.TB_Recv.TabIndex = 4;
-            this.TB_Recv.Text = "";
-            // 
-            // TB_Send
-            // 
-            this.TB_Send.Location = new System.Drawing.Point(12, 110);
-            this.TB_Send.Name = "TB_Send";
-            this.TB_Send.Size = new System.Drawing.Size(37, 21);
-            this.TB_Send.TabIndex = 3;
-            this.TB_Send.Text = "";
             // 
             // TB_ATMCARD_ID
             // 
@@ -374,20 +371,48 @@
             this.TB_MEMBER_NO.Size = new System.Drawing.Size(105, 20);
             this.TB_MEMBER_NO.TabIndex = 22;
             // 
-            // ITEM_AMT
+            // TB_Send
             // 
-            this.ITEM_AMT.Location = new System.Drawing.Point(137, -1);
-            this.ITEM_AMT.Name = "ITEM_AMT";
-            this.ITEM_AMT.Size = new System.Drawing.Size(120, 20);
-            this.ITEM_AMT.TabIndex = 24;
-            this.ITEM_AMT.Visible = false;
-            this.ITEM_AMT.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
+            this.TB_Send.Location = new System.Drawing.Point(12, 111);
+            this.TB_Send.Name = "TB_Send";
+            this.TB_Send.Size = new System.Drawing.Size(429, 20);
+            this.TB_Send.TabIndex = 24;
+            // 
+            // BT_SYSTEM_CHECK
+            // 
+            this.BT_SYSTEM_CHECK.Location = new System.Drawing.Point(12, 82);
+            this.BT_SYSTEM_CHECK.Name = "BT_SYSTEM_CHECK";
+            this.BT_SYSTEM_CHECK.Size = new System.Drawing.Size(125, 23);
+            this.BT_SYSTEM_CHECK.TabIndex = 25;
+            this.BT_SYSTEM_CHECK.Text = "Check System ATM";
+            this.BT_SYSTEM_CHECK.UseVisualStyleBackColor = true;
+            this.BT_SYSTEM_CHECK.Click += new System.EventHandler(this.BT_SYSTEM_CHECK_Click);
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(12, 39);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(90, 13);
+            this.label8.TabIndex = 26;
+            this.label8.Text = "Certificates Path :";
+            // 
+            // TB_CERT
+            // 
+            this.TB_CERT.Location = new System.Drawing.Point(103, 39);
+            this.TB_CERT.Name = "TB_CERT";
+            this.TB_CERT.Size = new System.Drawing.Size(338, 20);
+            this.TB_CERT.TabIndex = 27;
             // 
             // ApplicationBAY
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(935, 499);
+            this.Controls.Add(this.TB_CERT);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.BT_SYSTEM_CHECK);
+            this.Controls.Add(this.TB_Send);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.TB_MEMBER_NO);
             this.Controls.Add(this.BT_CHECK_WCF);
@@ -406,8 +431,6 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.TB_LOG);
             this.Controls.Add(this.TB_Exception);
-            this.Controls.Add(this.TB_Recv);
-            this.Controls.Add(this.TB_Send);
             this.Controls.Add(this.submit);
             this.Controls.Add(this.panel1);
             this.Name = "ApplicationBAY";
@@ -438,8 +461,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label LB_Status;
         private System.Windows.Forms.TextBox TBM_01;
-        private System.Windows.Forms.RichTextBox TB_Recv;
-        private System.Windows.Forms.RichTextBox TB_Send;
         private System.Windows.Forms.TextBox TB_ATMCARD_ID;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
@@ -456,6 +477,10 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox TB_MEMBER_NO;
         private System.Windows.Forms.NumericUpDown ITEM_AMT;
+        private System.Windows.Forms.TextBox TB_Send;
+        private System.Windows.Forms.Button BT_SYSTEM_CHECK;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TextBox TB_CERT;
     }
 }
 
