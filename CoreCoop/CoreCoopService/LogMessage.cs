@@ -27,6 +27,20 @@ namespace CoreCoopService
             }
         }
 
+        public void WriteLog(String Description, String Value, String Filename)
+        {
+            try
+            {
+                String DESC = Description + "               ";
+                DESC = DESC.Substring(0, 15);
+                WriteLog(DESC + " " + Value, Filename);
+            }
+            catch (Exception ex)
+            {
+                WriteErrorLog(ex.Message);
+            }
+        }
+
         private String CheckDirectory()
         {
             try
@@ -46,7 +60,7 @@ namespace CoreCoopService
 
         public void WriteErrorLog(String DataMassage)
         {
-            String LogFile_Path = "C:\\AtmCoreCoop\\logsError\\ERROR" + DateTime.Now.ToString("yyyyMMdd") +".txt";
+            String LogFile_Path = "C:\\AtmCoreCoop\\logsError\\ERROR" + DateTime.Now.ToString("yyyyMMdd") + ".txt";
             if (!Directory.Exists(LogFile_Path))
             {
                 Directory.CreateDirectory(LogFile_Path);
