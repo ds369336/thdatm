@@ -22,7 +22,7 @@ namespace ATMBAY
         public String AcquirerTerminalLocation = String.Empty;
         public String AcquirerTerminalOwner = String.Empty;
         public String AcquirerTerminalCity = String.Empty;
-        public UInt32 TerminalSequenceNo = 0;
+        public String TerminalSequenceNo = String.Empty;
         public UInt32 AcquirerTraceNumber = 0;
         public String COOPFIID = String.Empty;
         public UInt32 COOPCustomerID = 0;
@@ -47,6 +47,7 @@ namespace ATMBAY
         {
             try
             {
+                String TEMP = String.Empty;
                 this.TransactionMessageCode = DataMessage.Substring(0, 4);//1
 
                 this.ServiceType = DataMessage.Substring(4, 4);//2.1
@@ -55,15 +56,25 @@ namespace ATMBAY
                 this.FromAccountCode = Convert.ToUInt32(DataMessage.Substring(10, 2));//3.2
                 this.ToAccountCode = Convert.ToUInt32(DataMessage.Substring(12, 2));//3.3
 
-                Int32 Year = Convert.ToInt32(DataMessage.Substring(14, 4));
-                Int32 Mount = Convert.ToInt32(DataMessage.Substring(18, 2));
-                Int32 Day = Convert.ToInt32(DataMessage.Substring(20, 2));
-                Int32 HH = Convert.ToInt32(DataMessage.Substring(22, 2));
-                Int32 MM = Convert.ToInt32(DataMessage.Substring(24, 2));
-                Int32 SS = Convert.ToInt32(DataMessage.Substring(26, 2));
-                this.TransactionDateTime = new DateTime(Year, Mount, Day, HH, MM, SS);//4.1-4.2
+                try
+                {
+                    TEMP = DataMessage.Substring(14, 14);
+                    Int32 Year = Convert.ToInt32(DataMessage.Substring(14, 4));
+                    Int32 Mount = Convert.ToInt32(DataMessage.Substring(18, 2));
+                    Int32 Day = Convert.ToInt32(DataMessage.Substring(20, 2));
+                    Int32 HH = Convert.ToInt32(DataMessage.Substring(22, 2));
+                    Int32 MM = Convert.ToInt32(DataMessage.Substring(24, 2));
+                    Int32 SS = Convert.ToInt32(DataMessage.Substring(26, 2));
+                    this.TransactionDateTime = new DateTime(Year, Mount, Day, HH, MM, SS);//4.1-4.2
+                }
+                catch (Exception ex) { throw new Exception("4.1-2 TransactionDateTime(yyyyMMddHHmmss) = [" + TEMP + "] " + ex.Message); }
 
-                this.PANLength = Convert.ToUInt32(DataMessage.Substring(28, 2));//5.1
+                try
+                {
+                    this.PANLength = Convert.ToUInt32(TEMP);//5.1
+                }
+                catch { this.PANLength = 0; }
+
                 this.PANNumber = DataMessage.Substring(30, 19);//5.2
 
                 this.PINBlock = DataMessage.Substring(49, 32);//6.1
@@ -72,24 +83,76 @@ namespace ATMBAY
                 this.AcquirerTerminalLocation = DataMessage.Substring(97, 30);//7.2
                 this.AcquirerTerminalOwner = DataMessage.Substring(127, 3);//7.3
                 this.AcquirerTerminalCity = DataMessage.Substring(130, 3);//7.4
-                this.TerminalSequenceNo = Convert.ToUInt32(DataMessage.Substring(133, 8));//7.5
-                this.AcquirerTraceNumber = Convert.ToUInt32(DataMessage.Substring(141, 6));//7.6
+                this.TerminalSequenceNo = DataMessage.Substring(133, 8);//7.5 //จากคู่มือจะเป็น NUM แต่การส่งต้องส่งค่าเดิมให้ซื้งอาจจะชิดซ้าย จึงใช้เป็น String จะดีกว่า
+
+                try
+                {
+                    this.AcquirerTraceNumber = Convert.ToUInt32(DataMessage.Substring(141, 6));//7.6
+                }
+                catch { this.AcquirerTraceNumber = 0; }
 
                 this.COOPFIID = DataMessage.Substring(147, 10);//8.1
-                this.COOPCustomerID = Convert.ToUInt32(DataMessage.Substring(157, 10));
-                this.COOPCustomerAC = Convert.ToUInt32(DataMessage.Substring(167, 10));
-                this.COOPBankAC = Convert.ToUInt32(DataMessage.Substring(177, 10));
-                this.COOPCustomerBankAC = Convert.ToUInt32(DataMessage.Substring(187, 10));
+
+                try
+                {
+                    this.COOPCustomerID = Convert.ToUInt32(DataMessage.Substring(157, 10));
+                }
+                catch { this.COOPCustomerID = 0; }
+
+                try
+                {
+                    TEMP = DataMessage.Substring(167, 10);
+                    this.COOPCustomerAC = Convert.ToUInt32(DataMessage.Substring(167, 10));
+                }
+                catch (Exception ex) { throw new Exception("8.1 COOPCustomerAC = [" + TEMP + "] " + ex.Message); }
+
+                try
+                {
+                    this.COOPBankAC = Convert.ToUInt32(DataMessage.Substring(177, 10));
+                }
+                catch { this.COOPBankAC = 0; }
+
+                try
+                {
+                    this.COOPCustomerBankAC = Convert.ToUInt32(DataMessage.Substring(187, 10));
+                }
+                catch { this.COOPCustomerBankAC = 0; }
 
                 this.IssuerReference = DataMessage.Substring(197, 50);//8.2
+                try
+                {
+                    this.Amount1 = Convert.ToDecimal(DataMessage.Substring(247, 15)) / 100;//9.1
+                }
+                catch { this.Amount1 = 0; }
+                try
+                {
+                    this.Amount2 = Convert.ToDecimal(DataMessage.Substring(262, 15)) / 100;//9.2
+                }
+                catch { this.Amount2 = 0; }
+                try
+                {
+                    this.Amount3 = Convert.ToDecimal(DataMessage.Substring(277, 15)) / 100;//9.3
+                }
+                catch { this.Amount3 = 0; }
 
-                this.Amount1 = Convert.ToDecimal(DataMessage.Substring(247, 15)) / 100;//9.1
-                this.Amount2 = Convert.ToDecimal(DataMessage.Substring(262, 15)) / 100;//9.2
-                this.Amount3 = Convert.ToDecimal(DataMessage.Substring(277, 15)) / 100;//9.3
+                try
+                {
+                    this.ResponseCode = Convert.ToUInt32(DataMessage.Substring(292, 2));//10.1
+                }
+                catch { this.ResponseCode = 0; }
 
-                this.ResponseCode = Convert.ToUInt32(DataMessage.Substring(292, 2));//10.1
-                this.ReversalCode = Convert.ToUInt32(DataMessage.Substring(294, 2));//10.2
-                this.ApproveCode = Convert.ToUInt32(DataMessage.Substring(296, 6));//10.3
+                try
+                {
+                    this.ReversalCode = Convert.ToUInt32(DataMessage.Substring(294, 2));//10.2
+                }
+                catch { this.ReversalCode = 0; }
+
+                try
+                {
+                    this.ApproveCode = Convert.ToUInt32(DataMessage.Substring(296, 6));//10.3
+                }
+                catch { this.ApproveCode = 0; }
+
 
                 this.ResponseMessage = DataMessage.Substring(302, 18);//10.4
             }
@@ -140,7 +203,7 @@ namespace ATMBAY
                 Result += (this.AcquirerTerminalLocation + Space).Substring(0, 30);//7.2
                 Result += (this.AcquirerTerminalOwner + Space).Substring(0, 3);//7.3
                 Result += (this.AcquirerTerminalCity + Space).Substring(0, 3);//7.4
-                Result += this.TerminalSequenceNo.ToString("00000000").Substring(0, 8);//7.5
+                Result += (this.TerminalSequenceNo + Space).Substring(0, 8);//7.5
                 Result += this.AcquirerTraceNumber.ToString("000000").Substring(0, 6);//7.6
 
                 Result += (this.COOPFIID + Space).Substring(0, 10);//8.1
@@ -168,9 +231,8 @@ namespace ATMBAY
             }
         }
 
-        public void InsertATMACT()
+        public String InsertATMACT(Sta ta)
         {
-            Sta ta = new Sta();
             try
             {
                 WebUtility WebUtil = new WebUtility();
@@ -194,15 +256,11 @@ namespace ATMBAY
                 String SqlString = "INSERT INTO ATMACT (CCS_OPERATE_DATE, ATM_NO, ATM_SEQNO, TRANS_MESSAGE_CODE, SERVICE_TYPE, TRANS_CODE, FROM_ACC_CODE, TO_ACC_CODE, ATMCARD_LENGTH, ATMCARD_ID, PIN_BLOCK, ATM_LOCATION, ATM_OWNER, ATM_CITY, TRACE_NUMBER, COOP_FIID, MEMBER_ID, MEMBER_ACC, COOP_BANK_ACC, MEMBER_BANK_ACC, COOP_REF, ITEM_AMT, FEE, LEDGER_BAL, AVAILABLE_BAL, RESPONSE_CODE, REVERSAL_CODE, APPROVE_CODE, RESPONSE_MSG) VALUES ({0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}, {11}, {12}, {13}, {14}, {15}, {16}, {17}, {18}, {19}, {20}, {21}, {22}, {23}, {24}, {25}, {26}, {27}, {28})";
                 String SqlInsert = WebUtil.SQLFormat(SqlString, this.TransactionDateTime, this.AcquirerTerminalNumber, this.TerminalSequenceNo, this.TransactionMessageCode, this.ServiceType, this.TransactionCode, this.FromAccountCode, this.ToAccountCode, this.PANLength, this.PANNumber, this.PINBlock, this.AcquirerTerminalLocation, this.AcquirerTerminalOwner, this.AcquirerTerminalCity, this.AcquirerTraceNumber, this.COOPFIID, this.COOPCustomerID, this.COOPCustomerAC, this.COOPBankAC, this.COOPCustomerBankAC, this.IssuerReference, ITEM_AMT, FEE, LEDGER_BAL, AVAILABLE_BAL, this.ResponseCode.ToString("00"), this.ReversalCode.ToString("00"), this.ApproveCode.ToString("000000"), this.ResponseMessage);
 
-                ta.Transection();
-                ta.Exe(SqlInsert);
-                ta.Commit();
-                ta.Close();
+                return SqlInsert;
 
             }
             catch (Exception ex)
             {
-                ta.Close();
                 throw ex;
             }
         }

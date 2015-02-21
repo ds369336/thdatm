@@ -12,9 +12,6 @@ namespace CoreCoopService
 
         public void DeptInquiry(String Member_ID, ref Decimal LedgerBalance, ref Decimal AvailableBalance)
         {
-            LedgerBalance = 1000;
-            AvailableBalance = 1000;
-            return;
             Sta ta = new Sta();
             try
             {
@@ -42,9 +39,6 @@ namespace CoreCoopService
 
         public void LoanInquiry(String Member_ID, ref Decimal LedgerBalance, ref Decimal AvailableBalance)
         {
-            LedgerBalance = 2000;
-            AvailableBalance = 2000;
-            return;
             Sta ta = new Sta();
             try
             {

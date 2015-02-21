@@ -6,7 +6,7 @@ using DataLibrary;
 
 namespace CoreCoopService
 {
-    class ServiceOther
+    public class ServiceOther
     {
         WebUtility WebUtil = new WebUtility();
         public String GetAccountName(String Coop_ID, String Member_No)
