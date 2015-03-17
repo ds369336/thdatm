@@ -8,53 +8,117 @@ namespace CoreCoopService
 {
     public class Inquiry
     {
+        private Decimal LedgerBal = 0;
+        private Decimal AvailableBal = 0;
+        private Decimal Dept_Hold = 1;
+        private Decimal Loan_Hold = 1;
+
         WebUtility WebUtil = new WebUtility();
 
-        public void DeptInquiry(String Member_ID, ref Decimal LedgerBalance, ref Decimal AvailableBalance)
+        public Decimal LedgerBalance
         {
-            Sta ta = new Sta();
+            get
+            {
+                try
+                {
+                    return LedgerBal;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+
+            }
+        }
+
+        public Decimal AvailableBalance
+        {
+            get
+            {
+                try
+                {
+                    return AvailableBal;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+
+            }
+        }
+
+        public Decimal DeptHold
+        {
+            get
+            {
+                try
+                {
+                    return Dept_Hold;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+
+            }
+        }
+
+        public void DeptInquiry(String COOP_FIID, String Member_ID, LogMessage LogMessage, Sta ta)
+        {
             try
             {
-                String SqlString = "SELECT NVL(PRNCBAL,0) AS LEDGER_AMT, (NVL(PRNCBAL,0) - NVL(SEQUEST_AMOUNT,0) - NVL(CHECKPEND_AMT,0)) AS AVAILABLE_AMT FROM DPDEPTMASTER WHERE DEPTCLOSE_STATUS = 0 AND ATMFLAG = 1 AND MEMBER_NO = {0}";
-                SqlString = WebUtil.SQLFormat(SqlString, Member_ID);
+                String SqlString = "SELECT NVL(DP.PRNCBAL,0) AS LEDGER_AMT, (NVL(DP.PRNCBAL,0) - NVL(DP.SEQUEST_AMOUNT,0) - NVL(DP.CHECKPEND_AMT,0) - NVL(AC.DEPTSEQUEST_AMT,0)) AS AVAILABLE_AMT, AC.DEPT_HOLD AS DEPT_HOLD FROM DPDEPTMASTER DP, ATMCOOP AC WHERE DP.DEPTCLOSE_STATUS = 0 AND DP.ATMFLAG = 1 AND TRIM(AC.COOP_FIID) = {0} AND MEMBER_NO = {1}";
+                SqlString = WebUtil.SQLFormat(SqlString, COOP_FIID.Trim(), Member_ID);
+                LogMessage.WriteLog("DeptInquiry SQL", SqlString);
                 Sdt dt = ta.Query(SqlString);
                 int RowCount = dt.GetRowCount();
-                if (RowCount > 1)
+                if (RowCount != 1)
                 {
-                    throw new Exception("พบจำนวนบัญชีเงินฝากของเลขที่สมาชิก " + Member_ID + " ที่ผูกกับ ATM จำนวน " + RowCount + " บัญชี");
+                    LedgerBal = 0;
+                    AvailableBal = 0;
+                    LogMessage.WriteLog("", "พบจำนวนบัญชีเงินฝากของเลขที่สมาชิก " + Member_ID + " ที่ผูกกับ ATM จำนวน " + RowCount + " บัญชี");
                 }
-                if (dt.Next())
+                else if (dt.Next())
                 {
-                    LedgerBalance = dt.GetDecimal("LEDGER_AMT");
-                    AvailableBalance = dt.GetDecimal("AVAILABLE_AMT");
+                    LedgerBal = dt.GetDecimal("LEDGER_AMT");
+                    AvailableBal = dt.GetDecimal("AVAILABLE_AMT");
+                    Dept_Hold = dt.GetDecimal("DEPT_HOLD");
                 }
-                ta.Close();
+                LogMessage.WriteLog("LedgerBalance", LedgerBalance.ToString("#,##0.00"));
+                LogMessage.WriteLog("AvailableBalance", LedgerBalance.ToString("#,##0.00"));
             }
             catch (Exception ex)
             {
-                ta.Close();
                 throw ex;
             }
         }
 
-        public void LoanInquiry(String Member_ID, ref Decimal LedgerBalance, ref Decimal AvailableBalance)
+        public void LoanInquiry(String COOP_FIID, String Member_ID, LogMessage LogMessage, Sta ta)
         {
-            Sta ta = new Sta();
             try
             {
-                String SqlString = "SELECT (NVL(LOANAPPROVE_AMT, 0) - NVL(PRINCIPAL_BALANCE, 0)) AS LEDGER_AMT, (NVL(LOANAPPROVE_AMT, 0) - NVL(PRINCIPAL_BALANCE, 0)) AS AVAILABLE_AMT FROM LNCONTMASTER WHERE CONTRACT_STATUS = 1 AND ATMFLAG = 1 AND MEMBER_NO = {0}";
-                SqlString = WebUtil.SQLFormat(SqlString, Member_ID);
+                String SqlString = "SELECT (NVL(LOANAPPROVE_AMT, 0) - NVL(PRINCIPAL_BALANCE, 0)) AS LEDGER_AMT, (NVL(LOANAPPROVE_AMT, 0) - NVL(PRINCIPAL_BALANCE, 0) - NVL(AC.LOANSEQUEST_AMT,0)) AS AVAILABLE_AMT, AC.LOAN_HOLD AS DEPT_HOLD FROM LNCONTMASTER LN, ATMCOOP AC WHERE CONTRACT_STATUS = 1 AND ATMFLAG = 1 AND MEMBER_NO = {0}";
+                SqlString = WebUtil.SQLFormat(SqlString, COOP_FIID.Trim(), Member_ID);
+                LogMessage.WriteLog("LoanInquiry SQL", SqlString);
                 Sdt dt = ta.Query(SqlString);
-                if (dt.Next())
+                int RowCount = dt.GetRowCount();
+                if (RowCount != 1)
                 {
-                    LedgerBalance = dt.GetDecimal("LEDGER_AMT");
-                    AvailableBalance = dt.GetDecimal("AVAILABLE_AMT");
+                    LedgerBal = 0;
+                    AvailableBal = 0;
+                    LogMessage.WriteLog("", "พบจำนวนสัญญาเงินกู้ของเลขที่สมาชิก " + Member_ID + " ที่ผูกกับ ATM จำนวน " + RowCount + " สัญญา");
                 }
-                ta.Close();
+                else if (dt.Next())
+                {
+                    LedgerBal = dt.GetDecimal("LEDGER_AMT");
+                    AvailableBal = dt.GetDecimal("AVAILABLE_AMT");
+                    Loan_Hold = dt.GetDecimal("LOAN_HOLD");
+                }
+                LogMessage.WriteLog("LedgerBalance", LedgerBalance.ToString("#,##0.00"));
+                LogMessage.WriteLog("AvailableBalance", LedgerBalance.ToString("#,##0.00"));
             }
             catch (Exception ex)
             {
-                ta.Close();
                 throw ex;
             }
         }

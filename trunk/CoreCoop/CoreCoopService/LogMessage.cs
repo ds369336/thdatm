@@ -11,14 +11,28 @@ namespace CoreCoopService
     public class LogMessage
     {
         XmlConfigService cfg = new XmlConfigService();
+        
+        String LogFileName = "InquiryLog" + DateTime.Now.ToString("yyyyMMdd") + ".txt";
 
-        public void WriteLog(String DataMassage, String Filename)
+        public LogMessage(String LogFileName)
+        {
+            try
+            {
+                this.LogFileName = LogFileName;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public void WriteLog(String DataMassage)
         {
             try
             {
                 int logflag = cfg.GetDataInt("write_webserver_log");
                 if (logflag != 1) return;
-                String LogFile_Path = CheckDirectory() + Filename;
+                String LogFile_Path = CheckDirectory() + LogFileName;
                 File.AppendAllText(LogFile_Path, DateTime.Now.ToString("yyyyMMdd_HHmmss ", new CultureInfo("en-US")) + DataMassage + "\r\n", Encoding.Default);
             }
             catch (Exception ex)
@@ -27,13 +41,13 @@ namespace CoreCoopService
             }
         }
 
-        public void WriteLog(String Description, String Value, String Filename)
+        public void WriteLog(String Description, String Value)
         {
             try
             {
                 String DESC = Description + "               ";
                 DESC = DESC.Substring(0, 15);
-                WriteLog(DESC + " " + Value, Filename);
+                WriteLog(DESC + " " + Value, LogFileName);
             }
             catch (Exception ex)
             {

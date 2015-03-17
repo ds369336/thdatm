@@ -231,7 +231,7 @@ namespace ATMBAY
             }
         }
 
-        public String InsertATMACT(Sta ta)
+        public String GetInsertATMACT()
         {
             try
             {
