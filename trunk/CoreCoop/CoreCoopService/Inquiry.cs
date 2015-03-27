@@ -12,6 +12,7 @@ namespace CoreCoopService
         private Decimal AvailableBal = 0;
         private Decimal Dept_Hold = 1;
         private Decimal Loan_Hold = 1;
+        private String DEPTACCOUNT_NO = String.Empty;
 
         WebUtility WebUtil = new WebUtility();
 
@@ -63,20 +64,60 @@ namespace CoreCoopService
             }
         }
 
+        public String DeptaccountNo
+        {
+            get
+            {
+                try
+                {
+                    return DEPTACCOUNT_NO;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+
+            }
+        }
+
         public void DeptInquiry(String COOP_FIID, String Member_ID, LogMessage LogMessage, Sta ta)
         {
             try
             {
-                String SqlString = "SELECT NVL(DP.PRNCBAL,0) AS LEDGER_AMT, (NVL(DP.PRNCBAL,0) - NVL(DP.SEQUEST_AMOUNT,0) - NVL(DP.CHECKPEND_AMT,0) - NVL(AC.DEPTSEQUEST_AMT,0)) AS AVAILABLE_AMT, AC.DEPT_HOLD AS DEPT_HOLD FROM DPDEPTMASTER DP, ATMCOOP AC WHERE DP.DEPTCLOSE_STATUS = 0 AND DP.ATMFLAG = 1 AND TRIM(AC.COOP_FIID) = {0} AND MEMBER_NO = {1}";
-                SqlString = WebUtil.SQLFormat(SqlString, COOP_FIID.Trim(), Member_ID);
-                LogMessage.WriteLog("DeptInquiry SQL", SqlString);
-                Sdt dt = ta.Query(SqlString);
+                Decimal PAY_AMT = 0;
+                Decimal RECEIVE_AMT = 0;
+                String SqlGetAccount = "SELECT DEPTACCOUNT_NO, PAY_AMT, RECEIVE_AMT FROM ATMDEPT WHERE MEMBER_NO = {0} AND COOP_ID = {1}";
+                SqlGetAccount = WebUtil.SQLFormat(SqlGetAccount, Member_ID, COOP_FIID);
+                LogMessage.WriteLog("DeptAccount SQL", SqlGetAccount);
+                Sdt dt = ta.Query(SqlGetAccount);
                 int RowCount = dt.GetRowCount();
                 if (RowCount != 1)
                 {
                     LedgerBal = 0;
                     AvailableBal = 0;
-                    LogMessage.WriteLog("", "พบจำนวนบัญชีเงินฝากของเลขที่สมาชิก " + Member_ID + " ที่ผูกกับ ATM จำนวน " + RowCount + " บัญชี");
+                    Dept_Hold = 1;
+                    LogMessage.WriteLog("", "พบจำนวนบัญชีเงินฝากของเลขที่สมาชิก " + Member_ID + " ที่ผูกกับ ATM [" + RowCount + " Row]");
+                    return;
+                }
+                else if (dt.Next())
+                {
+                    DEPTACCOUNT_NO = dt.GetString("DEPTACCOUNT_NO");
+                    PAY_AMT = dt.GetDecimal("PAY_AMT");
+                    RECEIVE_AMT = dt.GetDecimal("RECEIVE_AMT");
+                    LogMessage.WriteLog("", "DEPTACCOUNT_NO = " + DEPTACCOUNT_NO + " , PAY_AMT = " + PAY_AMT.ToString("#,##0.00") + " , RECEIVE_AMT = " + RECEIVE_AMT.ToString("#,##0.00"));
+                }
+                String SqlString = "SELECT NVL(DP.PRNCBAL,0) AS LEDGER_AMT, (NVL(DP.PRNCBAL,0) - NVL(DP.SEQUEST_AMOUNT,0) - NVL(DP.CHECKPEND_AMT,0) - NVL(AC.DEPTSEQUEST_AMT,0)) AS AVAILABLE_AMT, AC.DEPT_HOLD AS DEPT_HOLD FROM DPDEPTMASTER DP, ATMCOOP AC WHERE DP.DEPTCLOSE_STATUS = 0 AND TRIM(AC.COOP_FIID) = {0} AND MEMBER_NO = {1} AND DP.DEPTACCOUNT_NO = {2}";
+                SqlString = WebUtil.SQLFormat(SqlString, COOP_FIID, Member_ID, DEPTACCOUNT_NO);
+                LogMessage.WriteLog("DeptInquiry SQL", SqlString);
+                dt = ta.Query(SqlString);
+                RowCount = dt.GetRowCount();
+                if (RowCount != 1)
+                {
+                    LedgerBal = 0;
+                    AvailableBal = 0;
+                    Dept_Hold = 1;
+                    LogMessage.WriteLog("", "พบจำนวนบัญชีเงินฝากของเลขที่สมาชิก " + Member_ID + " ที่ผูกกับ ATM [" + RowCount + " Row]");
+                    return;
                 }
                 else if (dt.Next())
                 {
