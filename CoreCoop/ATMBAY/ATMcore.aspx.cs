@@ -20,7 +20,7 @@ namespace ATMBAY
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            String SqlInsert = String.Empty;
+            String SqlRequest = String.Empty;
             String SqlResponse = String.Empty;
             Sta ta = new Sta();
             Sta taCommit = new Sta();
@@ -59,9 +59,9 @@ namespace ATMBAY
                     LogMessage.WriteLog("Database Problem", "");
                     throw ex;
                 }
-                SqlInsert = DataRequest.GetInsertATMACT();//บันทึกลงตาราง ATMACT เก็บ LOG การ Request
-                LogMessage.WriteLog("LOGREQ SQL", SqlInsert);
-                taCommit.Exe(SqlInsert);
+                SqlRequest = DataRequest.GetInsertATMACT();//บันทึกลงตาราง ATMACT เก็บ LOG การ Request
+                LogMessage.WriteLog("LOGREQ SQL", SqlRequest);
+                taCommit.Exe(SqlRequest);
                 //#############################################################################
                 DataResponse.ResponseCode = ResponseCode.SystemError; //ป้องกันการ Error Exception
                 SqlResponse = DataResponse.DataMassage;
@@ -69,26 +69,36 @@ namespace ATMBAY
                 //#############################################################################
 
                 DataResponse.IssuerReference = "Somchai Suksombhut";
-                //ตรวจสอบ Request
-                switch (DataRequest.TransactionMessageCode)
+                try
                 {
-                    case "0700": //Balance Inquiry
-                        BalanceInquiry(DataRequest, ref DataResponse, ta, LogMessage);
-                        break;
-                    case "0100": // Account Name Inquiry [ถามชื่อบัญชี]
-                        AccountNameInquiry(DataRequest, ref DataResponse, ta, LogMessage);
-                        break;
-                    case "0200": // Fund Transfer //Money Withdraw
-                        Transaction(DataRequest, ref DataResponse, ta, LogMessage);
-                        break;
-                    case "0400": //Fund Transfer/ Cash Withdraw Reversal Request[ยกเลิกรายการทันที]
-                        CancelTransaction(DataRequest, ref DataResponse, ta, LogMessage);
-                        break;
-                    default: break;
+                    //ตรวจสอบ Request
+                    switch (DataRequest.TransactionMessageCode)
+                    {
+                        case "0700": //Balance Inquiry
+                            BalanceInquiry(DataRequest, ref DataResponse, ta, LogMessage);
+                            break;
+                        case "0100": // Account Name Inquiry [ถามชื่อบัญชี]
+                            AccountNameInquiry(DataRequest, ref DataResponse, ta, LogMessage);
+                            break;
+                        case "0200": // Fund Transfer //Money Withdraw
+                            Transaction(DataRequest, ref DataResponse, ta, LogMessage);
+                            break;
+                        case "0400": //Fund Transfer/ Cash Withdraw Reversal Request[ยกเลิกรายการทันที]
+                            CancelTransaction(DataRequest, ref DataResponse, ta, LogMessage);
+                            break;
+                        default: break;
+                    }
                 }
-                SqlInsert = DataResponse.GetInsertATMACT();//บันทึกลงตาราง ATMACT เก็บ LOG การ Response
-                LogMessage.WriteLog("LOGRES SQL", SqlInsert);
-                taCommit.Exe(SqlInsert);
+                catch (Exception ex)
+                {
+                    DataResponse.ResponseCode = ResponseCode.SystemError;
+                    Result = DataResponse.DataMassage;
+                    SqlResponse = DataResponse.GetInsertATMACT();
+                    throw ex;
+                }
+                SqlResponse = DataResponse.GetInsertATMACT();//บันทึกลงตาราง ATMACT เก็บ LOG การ Response
+                LogMessage.WriteLog("LOGRES SQL", SqlResponse);
+                taCommit.Exe(SqlResponse);
                 taCommit.Commit();
                 ta.Commit();
 
@@ -108,7 +118,7 @@ namespace ATMBAY
                 catch { }
                 try
                 {
-                    try { taCommit.Exe(SqlResponse); }
+                    try { LogMessage.WriteLog("LOGRES SQL", SqlResponse); taCommit.Exe(SqlResponse); }
                     catch { }
                     taCommit.Commit();
                     taCommit.Close();
@@ -168,22 +178,25 @@ namespace ATMBAY
                     {
                         Inq.LoanInquiry(DataRequest.COOPFIID, DataRequest.COOPCustomerID.ToString("00000000"), LogMessage, ta);
                     }
-                    LogMessage.WriteLog("DEPOSIT HOLD", Inq.DeptHold.ToString() + " [1 = ปิดระบบเงินฝาก]");
+                    LogMessage.WriteLog("DEPOSIT HOLD", "HOLD_FLAG = " + Inq.DeptHold.ToString() + " [1 = ปิดระบบเงินฝาก]");
                     if (Inq.DeptHold == 1) //ปิดระบบเงินฝาก
                     {
+                        LogMessage.WriteLog("ResponseCode", "[" + ResponseCode.SystemNotAvailable + "] System Not Available");
                         DataResponse.ResponseCode = ResponseCode.SystemNotAvailable;
                     }
                     else
                     {
-                        DataResponse.Amount2 = Inq.AvailableBalance;
-                        DataResponse.Amount3 = Inq.LedgerBalance;
+                        DataResponse.Amount2 = Inq.AvailableBalance;//คงเหลือ
+                        DataResponse.Amount3 = Inq.LedgerBalance;//ถอนได้
                     }
+                }
+                else
+                {
+                    DataResponse.ResponseCode = ResponseCode.MessageEditError; //ข้อความไม่ถูกต้อง
                 }
             }
             catch (Exception ex)
             {
-                DataResponse.ResponseCode = ResponseCode.SystemError;
-                Result = DataResponse.DataMassage;
                 throw ex;
             }
         }
@@ -208,7 +221,43 @@ namespace ATMBAY
                             DataResponse.ResponseCode = ResponseCode.TransactionNotAuthorized;
                             break;
                         case "14": //ถอนเงินฝาก
-                            LogMessage.WriteLog("ประเภทรายการ", "ถอนเงินฝากแบบเงินสด");
+                            String Deptaccount_No = String.Empty;
+                            LogMessage.WriteLog("Withdraw Type", "Cash Withdraw Deposit [ถอนเงินฝากแบบเงินสด]");
+                            Inq.DeptInquiry(DataRequest.COOPFIID, DataRequest.COOPCustomerID.ToString("00000000"), LogMessage, ta);
+                            LogMessage.WriteLog("DEPOSIT HOLD", "HOLD_FLAG = " + Inq.DeptHold.ToString() + " [1 = ปิดระบบเงินฝาก]");
+                            if (Inq.DeptHold == 1) //ปิดระบบเงินฝาก
+                            {
+                                LogMessage.WriteLog("ResponseCode", "[" + ResponseCode.SystemNotAvailable + "] System Not Available");
+                                DataResponse.ResponseCode = ResponseCode.SystemNotAvailable;
+                                return;
+                            }
+                            else
+                            {
+                                AvailableBalance = Inq.AvailableBalance;//คงเหลือ
+                                LedgerBalance = Inq.LedgerBalance;//ถอนได้
+                                Deptaccount_No = Inq.DeptaccountNo;
+                            }
+                            Item_Amt = DataRequest.Amount1;
+                            LogMessage.WriteLog("Withdraw Amount", Item_Amt.ToString("#,##0.00"));
+
+                            if (LedgerBalance < Item_Amt)
+                            {
+                                LogMessage.WriteLog("ResponseCode", "[" + ResponseCode.AmountExceededLimit + "] เงินคงเหลือไม่เพียงพอ");
+                                DataResponse.ResponseCode = ResponseCode.AmountExceededLimit; //เงินคงเหลือไม่เพียงพอ
+                                Result = DataResponse.DataMassage;
+                                return;
+                            }
+                            else
+                            {
+                                //###### ตัดยอด ######
+                                Payment Pay = new Payment();
+                                String System_Code = "02";
+                                String Operate_Code = "002";
+                                Pay.DeptPayment(DataRequest.COOPCustomerID.ToString("00000000"), DataRequest.COOPFIID, Deptaccount_No, Item_Amt, DataRequest.TransactionDateTime, System_Code, Operate_Code, DataRequest.AcquirerTerminalNumber, DataRequest.TerminalSequenceNo, DataRequest, "");
+                            }
+                            break;
+                        case "34": //กู้เงินกู้
+                            LogMessage.WriteLog("Withdraw Type", "Cash Withdraw Loan [ถอน(กู้เพิ่ม)เงินกู้แบบเงินสด]");
                             BalanceInquiry(DataRequest, ref DataResponse, ta, LogMessage);
                             AvailableBalance = DataResponse.Amount2; //คงเหลือ
                             LedgerBalance = DataResponse.Amount3;//ถอนได้
@@ -219,13 +268,17 @@ namespace ATMBAY
 
                             if (LedgerBalance < Item_Amt)
                             {
+                                LogMessage.WriteLog("ResponseCode", "[" + ResponseCode.AmountExceededLimit + "] เงินคงเหลือไม่เพียงพอ");
                                 DataResponse.ResponseCode = ResponseCode.AmountExceededLimit; //เงินคงเหลือไม่เพียงพอ
                                 Result = DataResponse.DataMassage;
-                                throw new Exception("เงินคงเหลือไม่เพียงพอ");
+                                return;
                             }
-                            break;
-                        case "34": //กู้เงินกู้
-                            LogMessage.WriteLog("ประเภทรายการ", "ถอน(กู้เพิ่ม)เงินกู้แบบเงินสด");
+                            else
+                            {
+                                //###### ตัดยอด ######
+
+
+                            }
                             break;
                         default:
                             DataResponse.ResponseCode = ResponseCode.TransactionNotAuthorized;
@@ -244,7 +297,7 @@ namespace ATMBAY
                             DataResponse.ResponseCode = ResponseCode.TransactionNotAuthorized;
                             break;
                         case "14": //ถอนเงินฝาก
-                            LogMessage.WriteLog("ประเภทรายการ", "ถอนเงินฝากแบบโอน");
+                            LogMessage.WriteLog("Withdraw Type", "Tranfer Withdraw Deposit [ถอนเงินฝากแบบโอน]");
                             BalanceInquiry(DataRequest, ref DataResponse, ta, LogMessage);
                             AvailableBalance = DataResponse.Amount2; //คงเหลือ
                             LedgerBalance = DataResponse.Amount3;//ถอนได้
@@ -255,13 +308,19 @@ namespace ATMBAY
 
                             if (LedgerBalance < Item_Amt)
                             {
+                                LogMessage.WriteLog("ResponseCode", "[" + ResponseCode.AmountExceededLimit + "] เงินคงเหลือไม่เพียงพอ");
                                 DataResponse.ResponseCode = ResponseCode.AmountExceededLimit; //เงินคงเหลือไม่เพียงพอ
                                 Result = DataResponse.DataMassage;
-                                throw new Exception("เงินคงเหลือไม่เพียงพอ");
+                            }
+                            else
+                            {
+                                //###### ตัดยอด ######
+
+
                             }
                             break;
                         case "34": //กู้เงินกู้
-                            LogMessage.WriteLog("ประเภทรายการ", "ถอน(กู้เพิ่ม)เงินกู้แบบโอน");
+                            LogMessage.WriteLog("Withdraw Type", "Tranfer Withdraw Loan [ถอน(กู้เพิ่ม)เงินกู้แบบโอน]");
                             BalanceInquiry(DataRequest, ref DataResponse, ta, LogMessage);
                             AvailableBalance = DataResponse.Amount2; //คงเหลือ
                             LedgerBalance = DataResponse.Amount3;//ถอนได้
@@ -272,9 +331,9 @@ namespace ATMBAY
 
                             if (LedgerBalance < Item_Amt)
                             {
+                                LogMessage.WriteLog("ResponseCode", "[" + ResponseCode.AmountExceededLimit + "] เงินคงเหลือไม่เพียงพอ");
                                 DataResponse.ResponseCode = ResponseCode.AmountExceededLimit; //เงินคงเหลือไม่เพียงพอ
                                 Result = DataResponse.DataMassage;
-                                throw new Exception("เงินคงเหลือไม่เพียงพอ");
                             }
                             break;
                         default:

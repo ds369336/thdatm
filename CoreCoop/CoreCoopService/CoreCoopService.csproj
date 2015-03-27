@@ -45,7 +45,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceOther.cs" />
     <Compile Include="WebUtility.cs" />
-    <Compile Include="Withdrawable.cs" />
+    <Compile Include="Receive.cs" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
