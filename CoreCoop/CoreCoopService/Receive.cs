@@ -6,15 +6,16 @@ using DataLibrary;
 
 namespace CoreCoopService
 {
-    public class Payment
+    public class Receive
     {
         WebUtility WebUtil = new WebUtility();
-        public void DeptPayment(String MEMBER_NO, String COOP_ID, String DEPTACCOUNT_NO, Decimal ITEM_AMT, DateTime CCS_OPERATE_DATE, String SYSTEM_CODE, String OPERATE_CODE, String CASH_TYPE, String ATM_NO, String ATM_SEQNO, String SAVING_ACC, LogMessage LogMessage, Sta ta)
+        public void DeptWithdraw(String MEMBER_NO, String COOP_ID, String DEPTACCOUNT_NO, Decimal ITEM_AMT, DateTime CCS_OPERATE_DATE, String SYSTEM_CODE, String OPERATE_CODE, String CASH_TYPE, String ATM_NO, String ATM_SEQNO, String SAVING_ACC, LogMessage LogMessage, Sta ta)
         {
             try
             {
-                String SqlUpdateATMDEPT = "UPDATE ATMDEPT SET PAY_AMT=PAY_AMT + {0} WHERE ATMDEPT.MEMBER_NO={1}  AND ATMDEPT.COOP_ID={2}  AND ATMDEPT.DEPTACCOUNT_NO={3}";
+                String SqlUpdateATMDEPT = "UPDATE ATMDEPT SET RECEIVE_AMT=RECEIVE_AMT + {0} WHERE ATMDEPT.MEMBER_NO={1}  AND ATMDEPT.COOP_ID={2}  AND ATMDEPT.DEPTACCOUNT_NO={3}";
                 SqlUpdateATMDEPT = WebUtil.SQLFormat(SqlUpdateATMDEPT, ITEM_AMT, MEMBER_NO, COOP_ID, DEPTACCOUNT_NO);
+                LogMessage.WriteLog("UPDATE ATMDEPT", SqlUpdateATMDEPT);
                 ta.Exe(SqlUpdateATMDEPT);
 
                 String SqlInsertATMTRANSACTION = @"INSERT INTO ATMTRANSACTION

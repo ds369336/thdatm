@@ -218,9 +218,9 @@ namespace ATMBAY
                 Result += (this.Amount2 * 100).ToString("000000000000000").Substring(0, 15);//9.2
                 Result += (this.Amount3 * 100).ToString("000000000000000").Substring(0, 15);//9.3
 
-                Result += this.ResponseCode.ToString("0000000000").Substring(0, 2);//10.1
-                Result += this.ReversalCode.ToString("0000000000").Substring(0, 2);//10.2
-                Result += this.ApproveCode.ToString("0000000000").Substring(0, 6);//10.3
+                Result += this.ResponseCode.ToString("00").Substring(0, 2);//10.1
+                Result += this.ReversalCode.ToString("00").Substring(0, 2);//10.2
+                Result += this.ApproveCode.ToString("000000").Substring(0, 6);//10.3
 
                 Result += (this.ResponseMessage + Space).Substring(0, 18);//10.4
                 return Result;
