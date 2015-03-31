@@ -33,7 +33,7 @@ namespace CoreCoopService
                 int logflag = cfg.GetDataInt("write_webserver_log");
                 if (logflag != 1) return;
                 String LogFile_Path = CheckDirectory() + LogFileName;
-                File.AppendAllText(LogFile_Path, DateTime.Now.ToString("yyyyMMdd_HHmmss ", new CultureInfo("en-US")) + DataMassage + "\r\n", Encoding.Default);
+                File.AppendAllText(LogFile_Path, DateTime.Now.ToString("yyyyMMdd_HHmmss ", new CultureInfo("en-US")) + DataMassage + "\r\n", Encoding.UTF8);
             }
             catch (Exception ex)
             {
@@ -47,7 +47,7 @@ namespace CoreCoopService
             {
                 String DESC = Description + "               ";
                 DESC = DESC.Substring(0, 15);
-                WriteLog(DESC + " " + Value, LogFileName);
+                WriteLog(DESC + " " + Value);
             }
             catch (Exception ex)
             {
