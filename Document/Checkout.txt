@@ -1,1 +1,1 @@
-https://thdatm.googlecode.com/svn/trunk/
+https://github.com/ds369336/thdatm.git/trunk/
