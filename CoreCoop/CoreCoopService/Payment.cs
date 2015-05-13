@@ -38,7 +38,7 @@ namespace CoreCoopService
                                                   VALUES ( {0}, {1}, {2}, {3}, {4}, {5}, {6}, 
                                                      {7}, {8}, {9}, {10})";
                 SqlInsertATMTRANSACTION = WebUtil.SQLFormat(SqlInsertATMTRANSACTION, MEMBER_NO, COOP_ID, ACCOUNT_NO, CCS_OPERATE_DATE, SYSTEM_CODE, OPERATE_CODE, CASH_TYPE, ITEM_AMT, ATM_NO, ATM_SEQNO, SAVING_ACC);
-                LogMessage.WriteLog("UPDATE ATMTRAN..", SqlInsertATMTRANSACTION);
+                LogMessage.WriteLog("INSERT ATMTRAN", SqlInsertATMTRANSACTION);
                 ta.Exe(SqlInsertATMTRANSACTION);
             }
             catch (Exception ex)

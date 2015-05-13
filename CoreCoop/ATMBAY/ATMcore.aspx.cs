@@ -175,7 +175,7 @@ namespace ATMBAY
                 {
                     if (DataRequest.FromAccountCode == 14) //COOP Deposit Account [ถามยอดเงินฝาก]
                     {
-                        LogMessage.WriteLog("Inquiry Type", "Inquiry Deposit [สอบถามยอดเงินฝาก] ####################");
+                        LogMessage.WriteLog("TransactionType", "Inquiry Deposit [สอบถามยอดเงินฝาก] ####################");
                         Inq.DeptInquiry(DataRequest.COOPFIID, DataRequest.COOPCustomerID.ToString("00000000"), LogMessage, ta);
                         if (Inq.DeptHold == 1 || Inq.AccountHold == 1) //ปิดระบบเงินฝาก
                         {
@@ -191,10 +191,11 @@ namespace ATMBAY
                     }
                     else if (DataRequest.FromAccountCode == 34) //COOP Loan Account [ถามยอดเงินกู้]
                     {
+                        LogMessage.WriteLog("TransactionType", "Inquiry Loan [สอบถามยอดเงินกู้] ####################");
                         Inq.LoanInquiry(DataRequest.COOPFIID, DataRequest.COOPCustomerID.ToString("00000000"), LogMessage, ta);
                         if (Inq.LoanHold == 1 || Inq.AccountHold == 1) //ปิดระบบเงินกู้
                         {
-                            LogMessage.WriteLog("LOAN HOLD", "HOLD_FLAG = " + Inq.LoanHold.ToString() + " [1 = ปิดระบบเงินฝาก], ACCOUNT_HOLD = " + Inq.AccountHold + " [1 = อายัดสัญญาเงินกู้]");
+                            LogMessage.WriteLog("LOAN HOLD", "HOLD_FLAG = " + Inq.LoanHold.ToString() + " [1 = ปิดระบบเงินกู้], ACCOUNT_HOLD = " + Inq.AccountHold + " [1 = อายัดสัญญาเงินกู้]");
                             LogMessage.WriteLog("ResponseCode", "[" + ResponseCode.SystemNotAvailable + "] System Not Available");
                             DataResponse.ResponseCode = ResponseCode.SystemNotAvailable;
                         }
@@ -228,6 +229,7 @@ namespace ATMBAY
                 Decimal Item_Amt = 0;
                 DataResponse.TransactionMessageCode = "0210";
                 //#######################################################################################################################
+                #region ถอนสด
                 if (DataRequest.TransactionCode == 10) //[ถอนเงินสด] (เงินออกทางตู้ ATM ทันที)
                 {
                     switch (DataRequest.FromAccountCode.ToString("00"))
@@ -240,7 +242,7 @@ namespace ATMBAY
                             break;
                         case "14": //ถอนเงินฝาก
                             String Deptaccount_No = String.Empty;
-                            LogMessage.WriteLog("Withdraw Type", "Cash Withdraw Deposit [ถอนเงินฝากแบบเงินสด] ####################");
+                            LogMessage.WriteLog("TransactionType", "Cash Withdraw Deposit [ถอนเงินฝากแบบเงินสด] ####################");
                             Inq.DeptInquiry(Coop_Id, Member_No, LogMessage, ta);
                             if (Inq.DeptHold == 1 || Inq.AccountHold == 1) //ปิดระบบเงินฝาก
                             {
@@ -279,7 +281,7 @@ namespace ATMBAY
                             break;
                         case "34": //กู้เงินกู้
                             String Loancontract_No = String.Empty;
-                            LogMessage.WriteLog("Withdraw Type", "Cash Withdraw Loan [ถอน(กู้เพิ่ม)เงินกู้แบบเงินสด] ####################");
+                            LogMessage.WriteLog("TransactionType", "Cash Withdraw Loan [ถอน(กู้เพิ่ม)เงินกู้แบบเงินสด] ####################");
                             Inq.LoanInquiry(Coop_Id, Member_No, LogMessage, ta);
                             if (Inq.LoanHold == 1 || Inq.AccountHold == 1) //ปิดระบบเงินกู้
                             {
@@ -321,7 +323,9 @@ namespace ATMBAY
                             break;
                     }
                 }
+                #endregion
                 //#######################################################################################################################
+                #region ถอนโอน
                 else if (DataRequest.TransactionCode == 42) //ถอนเงินแบบโอน
                 {
                     switch (DataRequest.FromAccountCode.ToString("00"))
@@ -334,7 +338,7 @@ namespace ATMBAY
                             break;
                         case "14": //ถอนเงินฝาก
                             String Deptaccount_No = String.Empty;
-                            LogMessage.WriteLog("Withdraw Type", "Cash Withdraw Deposit [ถอนเงินฝากแบบโอนเข้าบัญชี] ####################");
+                            LogMessage.WriteLog("TransactionType", "Cash Withdraw Deposit [ถอนเงินฝากแบบโอนเข้าบัญชี] ####################");
                             Inq.DeptInquiry(Coop_Id, Member_No, LogMessage, ta);
                             if (Inq.DeptHold == 1 || Inq.AccountHold == 1) //ปิดระบบเงินฝาก
                             {
@@ -373,7 +377,7 @@ namespace ATMBAY
                             break;
                         case "34": //กู้เงินกู้
                             String Loancontract_No = String.Empty;
-                            LogMessage.WriteLog("Withdraw Type", "Tranfer Withdraw Loan [ถอน(กู้เพิ่ม)เงินกู้แบบโอน] ####################");
+                            LogMessage.WriteLog("TransactionType", "Tranfer Withdraw Loan [ถอน(กู้เพิ่ม)เงินกู้แบบโอน] ####################");
                             Inq.LoanInquiry(Coop_Id, Member_No, LogMessage, ta);
                             if (Inq.LoanHold == 1 || Inq.AccountHold == 1) //ปิดระบบเงินกู้
                             {
@@ -416,7 +420,9 @@ namespace ATMBAY
                     }
 
                 }
+                #endregion
                 //#######################################################################################################################
+                #region ฝากเงิน
                 else if (DataRequest.TransactionCode == 43) //ใช้ชำระหนี้ หรือฝากเงิน
                 {
                     Payment Recv = new Payment();
@@ -430,7 +436,7 @@ namespace ATMBAY
                             break;
                         case "14": //ฝากเงินฝาก
                             String Deptaccount_No = String.Empty;
-                            LogMessage.WriteLog("Deposit Type", "Tranfer Deposit [ฝากเงินฝาก] ####################");
+                            LogMessage.WriteLog("TransactionType", "Tranfer Deposit [ฝากเงินฝาก] ####################");
                             Inq.DeptInquiry(Coop_Id, Member_No, LogMessage, ta);
                             if (Inq.DeptHold == 1 || Inq.AccountHold == 1) //ปิดระบบเงินฝาก
                             {
@@ -470,7 +476,7 @@ namespace ATMBAY
                             break;
                         case "34": //ชำระเงินกู้
                             String Loancontract_No = String.Empty;
-                            LogMessage.WriteLog("Loan Type", "Tranfer Loan [ชำระเงินกู้] ####################");
+                            LogMessage.WriteLog("TransactionType", "Tranfer Loan [ชำระเงินกู้] ####################");
                             Inq.LoanInquiry(Coop_Id, Member_No, LogMessage, ta);
                             if (Inq.LoanHold == 1 || Inq.AccountHold == 1) //ปิดระบบเงินฝาก
                             {
@@ -490,13 +496,13 @@ namespace ATMBAY
                             String LoanTranfer = DataRequest.COOPCustomerAC.ToString("00000000"); //ใช้อ้างอิงเลขที่ ขั้นต่ำ 10 หลัก โดยหลักการจะให้ใส่เลขที่สัญญาที่จะทำการชำระ
                             LogMessage.WriteLog("", "MEMBER_NO = " + Member_No + " (เลขที่สมาชิกที่ใช้ชำระหนี้)");
                             LogMessage.WriteLog("", "LOANCONTRACT_NO = " + Loancontract_No + " (เลขบัญชีสหกรณ์ที่ผู้ไว้กับสมาชิก)");
-                            //if (LoanTranfer != Inq.Member_No)
-                            //{
-                            //    LogMessage.WriteLog("ResponseCode", "[" + ResponseCode.InvalidAccountType + "] Invalid Account Type or Contact number");
-                            //    DataResponse.ResponseCode = ResponseCode.InvalidAccountType;
-                            //    return;
-                            //}
-                            //else
+                            if (LoanTranfer != Inq.Member_No)
+                            {
+                                LogMessage.WriteLog("ResponseCode", "[" + ResponseCode.InvalidAccountType + "] Invalid Account Type or Contact number");
+                                DataResponse.ResponseCode = ResponseCode.InvalidAccountType;
+                                return;
+                            }
+                            else
                             {
                                 DataResponse.Amount3 = AvailableBalance + Item_Amt; //คงเหลือ
                                 //###### ตัดยอด ######
@@ -511,6 +517,7 @@ namespace ATMBAY
                             break;
                     }
                 }
+                #endregion
                 //#######################################################################################################################
                 else
                 {

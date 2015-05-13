@@ -71,7 +71,7 @@ namespace ATMBAY
 
                 try
                 {
-                    this.PANLength = Convert.ToUInt32(TEMP);//5.1
+                    this.PANLength = Convert.ToUInt32(DataMessage.Substring(28, 2));//5.1
                 }
                 catch { this.PANLength = 0; }
 
@@ -84,7 +84,6 @@ namespace ATMBAY
                 this.AcquirerTerminalOwner = DataMessage.Substring(127, 3);//7.3
                 this.AcquirerTerminalCity = DataMessage.Substring(130, 3);//7.4
                 this.TerminalSequenceNo = DataMessage.Substring(133, 8);//7.5 //จากคู่มือจะเป็น NUM แต่การส่งต้องส่งค่าเดิมให้ซื้งอาจจะชิดซ้าย จึงใช้เป็น String จะดีกว่า
-
                 try
                 {
                     this.AcquirerTraceNumber = Convert.ToUInt32(DataMessage.Substring(141, 6));//7.6

@@ -224,7 +224,7 @@ namespace CoreCoopService
                 Decimal SEQUEST_AMT = 0;
                 String SqlGetAccount = "SELECT TRIM(LOANCONTRACT_NO) AS LOANCONTRACT_NO, RECEIVE_AMT, PAY_AMT, SEQUEST_AMT, ACCOUNT_HOLD FROM ATMLOAN WHERE ACCOUNT_STATUS = 1 AND MEMBER_NO = {0} AND COOP_ID = {1}";
                 SqlGetAccount = WebUtil.SQLFormat(SqlGetAccount, Member_ID, COOP_FIID);
-                LogMessage.WriteLog("LoanContract SQL", SqlGetAccount);
+                LogMessage.WriteLog("LoanCont SQL", SqlGetAccount);
                 Sdt dt = ta.Query(SqlGetAccount);
                 int RowCount = dt.GetRowCount();
                 if (RowCount != 1)
