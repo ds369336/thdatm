@@ -190,9 +190,9 @@ namespace ATMBAY
             }
         }
 
-        public uint AccountIsHeld
+        public uint AccountIsHold
         {
-            //Account is held, Contact bank
+            //Account is hold, Contact bank
             get
             {
                 try

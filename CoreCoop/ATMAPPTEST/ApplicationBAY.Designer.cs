@@ -63,6 +63,7 @@
             this.BT_SYSTEM_CHECK = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
             this.TB_CERT = new System.Windows.Forms.TextBox();
+            this.PostGenFile = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ITEM_AMT)).BeginInit();
             this.SuspendLayout();
@@ -404,11 +405,22 @@
             this.TB_CERT.Size = new System.Drawing.Size(338, 20);
             this.TB_CERT.TabIndex = 27;
             // 
+            // PostGenFile
+            // 
+            this.PostGenFile.Location = new System.Drawing.Point(143, 82);
+            this.PostGenFile.Name = "PostGenFile";
+            this.PostGenFile.Size = new System.Drawing.Size(125, 23);
+            this.PostGenFile.TabIndex = 28;
+            this.PostGenFile.Text = "GenFile";
+            this.PostGenFile.UseVisualStyleBackColor = true;
+            this.PostGenFile.Click += new System.EventHandler(this.PostGenFile_Click);
+            // 
             // ApplicationBAY
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(935, 499);
+            this.Controls.Add(this.PostGenFile);
             this.Controls.Add(this.TB_CERT);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.BT_SYSTEM_CHECK);
@@ -481,6 +493,7 @@
         private System.Windows.Forms.Button BT_SYSTEM_CHECK;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox TB_CERT;
+        private System.Windows.Forms.Button PostGenFile;
     }
 }
 

@@ -70,17 +70,16 @@ namespace ATMBAY
                 taCommit.Exe(SqlRequest);
                 //#############################################################################
 
-                DataResponse.IssuerReference = "Somchai Suksombhut";
                 try
                 {
                     //ตรวจสอบ Request
                     switch (DataRequest.TransactionMessageCode)
                     {
-                        case "0700": //Balance Inquiry
-                            BalanceInquiry(DataRequest, ref DataResponse, ta, LogMessage);
-                            break;
                         case "0100": // Account Name Inquiry [ถามชื่อบัญชี]
                             AccountNameInquiry(DataRequest, ref DataResponse, ta, LogMessage);
+                            break;
+                        case "0700": //Balance Inquiry
+                            BalanceInquiry(DataRequest, ref DataResponse, ta, LogMessage);
                             break;
                         case "0200": // Fund Transfer //Money Withdraw
                             Transaction(DataRequest, ref DataResponse, ta, LogMessage);
@@ -93,7 +92,8 @@ namespace ATMBAY
                 }
                 catch (Exception ex)
                 {
-                    DataResponse.ResponseCode = ResponseCode.SystemError;
+                    if (DataResponse.ResponseCode == 0) DataResponse.ResponseCode = ResponseCode.SystemError;
+                    LogMessage.WriteLog("ResponseCode", "[" + DataResponse.ResponseCode + "]");
                     Result = DataResponse.DataMassage;
                     SqlResponse = DataResponse.GetInsertATMACT();
                     throw ex;
@@ -155,12 +155,22 @@ namespace ATMBAY
                 ServiceOther ServiceOTH = new ServiceOther();
                 if (DataRequest.TransactionCode == 31) //To AC : name Query [***ห้ามเป็นภาษาไทย]
                 {
-                    //ServiceOTH.GetAccountName("", "");
+                    String Member_Name = "";
+                    Member_Name = ServiceOTH.GetAccountName(DataRequest.COOPCustomerID.ToString("00000000"), LogMessage, ta);
+                    if (Member_Name == "")
+                    {
+                        LogMessage.WriteLog("","NOT HAVE ACCOUNT IN COOP (ไม่พบเลขทะเบียนสมาชิกนี้ในระบบ)");
+                        DataResponse.ResponseCode = ResponseCode.AccountNotAuthorize;
+                        LogMessage.WriteLog("ResponseCode", "[" + ResponseCode.AccountNotAuthorize + "] Account not authorize, Contact bank");
+                    }
+                    else
+                    {
+                        DataResponse.IssuerReference = Member_Name;
+                    }
                 }
             }
             catch (Exception ex)
             {
-                DataResponse.ResponseCode = ResponseCode.SystemError;
                 Result = DataResponse.DataMassage;
                 throw ex;
             }
@@ -496,7 +506,9 @@ namespace ATMBAY
                             String LoanTranfer = DataRequest.COOPCustomerAC.ToString("00000000"); //ใช้อ้างอิงเลขที่ ขั้นต่ำ 10 หลัก โดยหลักการจะให้ใส่เลขที่สัญญาที่จะทำการชำระ
                             LogMessage.WriteLog("", "MEMBER_NO = " + Member_No + " (เลขที่สมาชิกที่ใช้ชำระหนี้)");
                             LogMessage.WriteLog("", "LOANCONTRACT_NO = " + Loancontract_No + " (เลขบัญชีสหกรณ์ที่ผู้ไว้กับสมาชิก)");
-                            if (LoanTranfer != Inq.Member_No)
+                            LogMessage.WriteLog("", "TRANFER_NO = " + LoanTranfer + " (เลขที่อ้างอิง)");
+
+                            if (LoanTranfer != Inq.Member_No && false)
                             {
                                 LogMessage.WriteLog("ResponseCode", "[" + ResponseCode.InvalidAccountType + "] Invalid Account Type or Contact number");
                                 DataResponse.ResponseCode = ResponseCode.InvalidAccountType;

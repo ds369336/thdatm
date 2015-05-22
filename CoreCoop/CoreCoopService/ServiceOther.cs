@@ -9,76 +9,31 @@ namespace CoreCoopService
     public class ServiceOther
     {
         WebUtility WebUtil = new WebUtility();
-        public String GetAccountName(String Coop_ID, String Member_No)
+        public String GetAccountName(String Member_No, LogMessage LogMessage, Sta ta)
         {
-            Sta ta = new Sta();
-            String ACCOUNT_NAME = String.Empty;
-
+            String ACCOUNT_NAME = String.Empty; //[***ห้ามเป็นภาษาไทย]
             try
-            {//SELECT MEMBER_NO FROM ATMDEPT WHERE SAVING_ACC={2} AND COOP_ID ={1}
-                String SqlString = "SELECT TRIM(NAME)||'  '||TRIM(SURNAME) AS ACCOUNT_NAME FROM MEMBER WHERE COOP_ID = {0} AND MEMBER_NO = {1}";
-                SqlString = String.Format(SqlString, Coop_ID, Member_No);
-                Sdt dt = ta.Query(SqlString);
+            {
+                String SqlGetName = "SELECT MEMB_ENAME||' '||MEMB_ESURNAME AS ACCOUNT_NAME FROM MBMEMBMASTER WHERE MEMBER_NO = {0}";
+                SqlGetName = WebUtil.SQLFormat(SqlGetName, Member_No);
+                LogMessage.WriteLog("DeptAccount SQL", SqlGetName);
+                Sdt dt = ta.Query(SqlGetName);
                 if (dt.Next())
                 {
-                    ACCOUNT_NAME = dt.GetString("ACCOUNT_NAME");
+                    ACCOUNT_NAME = dt.GetString("ACCOUNT_NAME").ToUpper();
+                    LogMessage.WriteLog("", "ACCOUNT_NAME = " + ACCOUNT_NAME);
+                    if (ACCOUNT_NAME.Trim() == "") ACCOUNT_NAME = "N/A";
+                }
+                else
+                {
+                    ACCOUNT_NAME = "";
                 }
             }
             catch (Exception ex)
             {
-                ta.Close();
                 throw ex;
             }
-            ta.Close();
             return ACCOUNT_NAME;
-        }
-
-        public String GetMemberNoDept(String Coop_ID, String Atmcard_ID)
-        {
-            Sta ta = new Sta();
-            String MEMBER_NO = String.Empty;
-
-            try
-            {
-                String SqlString = "SELECT MEMBER_NO FROM ATMDEPT WHERE COOP_ID ={0} AND SAVING_ACC={1}";
-                SqlString = String.Format(SqlString, Coop_ID, Atmcard_ID);
-                Sdt dt = ta.Query(SqlString);
-                if (dt.Next())
-                {
-                    MEMBER_NO = dt.GetString("MEMBER_NO");
-                }
-            }
-            catch (Exception ex)
-            {
-                ta.Close();
-                throw ex;
-            }
-            ta.Close();
-            return MEMBER_NO;
-        }
-
-        public String GetMemberNoLoan(String Coop_ID, String Atmcard_ID)
-        {
-            Sta ta = new Sta();
-            String MEMBER_NO = String.Empty;
-
-            try
-            {
-                String SqlString = "SELECT MEMBER_NO FROM ATMLOAN WHERE COOP_ID ={0} AND SAVING_ACC={1}";
-                SqlString = String.Format(SqlString, Coop_ID, Atmcard_ID);
-                Sdt dt = ta.Query(SqlString);
-                if (dt.Next())
-                {
-                    MEMBER_NO = dt.GetString("MEMBER_NO");
-                }
-            }
-            catch (Exception ex)
-            {
-                ta.Close();
-                throw ex;
-            }
-            ta.Close();
-            return MEMBER_NO;
         }
     }
 }

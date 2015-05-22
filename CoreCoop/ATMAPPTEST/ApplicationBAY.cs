@@ -11,6 +11,7 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Threading;
 using System.Security.Cryptography.X509Certificates;
+using System.Globalization;
 
 namespace ATMAPPTEST
 {
@@ -1058,5 +1059,138 @@ namespace ATMAPPTEST
             }
         }
 
+        private void PostGenFile_Click(object sender, EventArgs e)
+        {
+            WriteLog("================== Start GenFile ===================");
+            try
+            {
+                StringWriter DataStringWriter = new StringWriter();
+                CultureInfo en = new CultureInfo("en-US");
+                //Header
+                String Space = "                                                                                                    ";
+                String REC_TYPE = "0";
+                String COOP_ID = "097";
+                String SETTLEMENT_DATE = DateTime.Now.ToString("dd/MM/yyyy", en);
+                String FILE_DESC = "COOP";//35 หลัก
+                FILE_DESC = (FILE_DESC + Space).Substring(0, 35);
+                String COOP_TYPE = "007097";
+                String RESERVE = (Space + Space + Space).Substring(0, 245);
+                DataStringWriter.WriteLine(REC_TYPE + COOP_ID + SETTLEMENT_DATE + FILE_DESC + COOP_TYPE + RESERVE);
+
+                //Detail
+                REC_TYPE = "1";
+                String COOP_CUST = "0000002990";
+                RESERVE = "   ";
+                String DATA_TYPE = "1";
+                String FUNCTION = "A";
+                String THAI_NAME = ("ประภาภรณ์ ประจักษ์" + Space).Substring(0, 50);
+                String ENGS_NAME = ("PRAPAPRON PRAJUCK" + Space).Substring(0, 50);
+                String SEX = "2";
+                String BIRTH_DATE = "19990101";
+                String CARD_TYPE = "01";
+                String CARD_NUM = "1470500010444";
+                String RESERVE2 = Space.Substring(0, 26);
+                String CONTRACT_ADDR = Space.Substring(0, 80);
+                String ACCOUNT_NO = "  00002990";
+                String RESERVE3 = Space.Substring(0, 38);
+                DataStringWriter.WriteLine(REC_TYPE + COOP_TYPE + COOP_CUST + RESERVE + DATA_TYPE + FUNCTION + THAI_NAME + ENGS_NAME + SEX + BIRTH_DATE + CARD_TYPE + CARD_NUM + RESERVE2 + CONTRACT_ADDR + ACCOUNT_NO + RESERVE3);
+
+                DATA_TYPE = "2";
+                String CUST_STATUS = "1";
+                String CUST_EXPDATE = "20991231";
+                String AUTH_INFORMATION = "00000010000" + "00004000000" + "99999" + "00100000000" + "99999" + "01000000000" + "99999" + "03000000000" + "99999" + "00000000000";
+                String DEBT_INFORMATION = Space.Substring(0, 78);
+                String BANK_INFO = Space.Substring(0, 10);
+                RESERVE2 = Space.Substring(0, 95);
+                DataStringWriter.WriteLine(REC_TYPE + COOP_TYPE + COOP_CUST + RESERVE + DATA_TYPE + FUNCTION + CUST_STATUS + CUST_EXPDATE + AUTH_INFORMATION + DEBT_INFORMATION + BANK_INFO + RESERVE2);
+
+                //Tailer
+                REC_TYPE = "9";
+                String TOTAL_END = "END";
+                String TOTAL_RECORDS = "000000002";
+                String CUST_LIMIT_AMT = "0000000000000";
+                String OD_PRINCIPAL = "0000000000000";
+                RESERVE = (Space + Space + Space).Substring(0, 261);
+                DataStringWriter.WriteLine(REC_TYPE + TOTAL_END + TOTAL_RECORDS + CUST_LIMIT_AMT + OD_PRINCIPAL + RESERVE);
+
+                File.WriteAllText("C:\\test.txt", DataStringWriter.ToString(), Encoding.Default);
+
+            }
+            catch (Exception ex)
+            {
+                WriteLog("Error Exception:" + ex.Message);
+            }
+            WriteLog("===================================================");
+        }
+
+        private String COOP_TYPE = "007097";
+        private String GetHeader()
+        {
+            try
+            {
+                CultureInfo en = new CultureInfo("en-US");
+                String Space = "                                                                                                    ";
+                String REC_TYPE = "0";
+                String COOP_ID = "097";
+                String SETTLEMENT_DATE = DateTime.Now.ToString("dd/MM/yyyy", en);
+                String FILE_DESC = "COOP";//35 หลัก
+                FILE_DESC = (FILE_DESC + Space).Substring(0, 35);
+                String RESERVE = (Space + Space + Space).Substring(0, 245);
+                return REC_TYPE + COOP_ID + SETTLEMENT_DATE + FILE_DESC + COOP_TYPE + RESERVE;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        private String GetDetail()
+        {
+            try
+            {
+                String Space = "                                                                                                    ";
+                String REC_TYPE = "1";
+                String COOP_CUST = "0000002990";//******************************
+                String RESERVE = "   ";
+                String DATA_TYPE = "1";
+                String FUNCTION = "A";//******************************
+                String THAI_NAME = ("ประภาภรณ์ ประจักษ์" + Space).Substring(0, 50);
+                String ENGS_NAME = ("PRAPAPRON PRAJUCK" + Space).Substring(0, 50);
+                String SEX = "2";//******************************
+                String BIRTH_DATE = "19990101";
+                String CARD_TYPE = "01";
+                String CARD_NUM = "1470500010444";//******************************
+                String RESERVE2 = Space.Substring(0, 26);
+                String CONTRACT_ADDR = Space.Substring(0, 80);
+                String ACCOUNT_NO = "  00002990";//******************************
+                String RESERVE3 = Space.Substring(0, 38);
+
+                String SqlSelect = "SELECT COOP_ID, MEMBER_NO, INFO_FLAG FROM ATMBANKWAITPROCRESS WHERE PROCESS_FLAG <> 1";
+
+                return REC_TYPE + COOP_TYPE + COOP_CUST + RESERVE + DATA_TYPE + FUNCTION + THAI_NAME + ENGS_NAME + SEX + BIRTH_DATE + CARD_TYPE + CARD_NUM + RESERVE2 + CONTRACT_ADDR + ACCOUNT_NO + RESERVE3;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        private String GetTailer()
+        {
+            try
+            {
+                String Space = "                                                                                                    ";
+                String REC_TYPE = "9";
+                String TOTAL_END = "END";
+                String TOTAL_RECORDS = "000000002";
+                String CUST_LIMIT_AMT = "0000000000000";
+                String OD_PRINCIPAL = "0000000000000";
+                String RESERVE = (Space + Space + Space).Substring(0, 261);
+                return REC_TYPE + TOTAL_END + TOTAL_RECORDS + CUST_LIMIT_AMT + OD_PRINCIPAL + RESERVE;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }
