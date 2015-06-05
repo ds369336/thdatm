@@ -254,6 +254,10 @@ namespace ATMBAY
                             String Deptaccount_No = String.Empty;
                             LogMessage.WriteLog("TransactionType", "Cash Withdraw Deposit [ถอนเงินฝากแบบเงินสด] ####################");
                             Inq.DeptInquiry(Coop_Id, Member_No, LogMessage, ta);
+
+                            Item_Amt = DataRequest.Amount1;
+                            LogMessage.WriteLog("Withdraw Amount", Item_Amt.ToString("#,##0.00"));
+
                             if (Inq.DeptHold == 1 || Inq.AccountHold == 1) //ปิดระบบเงินฝาก
                             {
                                 LogMessage.WriteLog("DEPOSIT HOLD", "HOLD_FLAG = " + Inq.DeptHold.ToString() + " [1 = ปิดระบบเงินฝาก], ACCOUNT_HOLD = " + Inq.AccountHold + " [1 = อายัดบัญชีเงินฝาก]");
@@ -264,23 +268,21 @@ namespace ATMBAY
                             else
                             {
                                 LogMessage.WriteLog("", "HOLD_FLAG = " + Inq.DeptHold.ToString());
-                                AvailableBalance = Inq.AvailableBalance;//คงเหลือ
-                                LedgerBalance = Inq.LedgerBalance;//ถอนได้
+                                LedgerBalance = Inq.LedgerBalance;//คงเหลือ
+                                AvailableBalance = Inq.AvailableBalance;//ถอนได้
                                 Deptaccount_No = Inq.DeptaccountNo;
                             }
-                            Item_Amt = DataRequest.Amount1;
-                            LogMessage.WriteLog("Withdraw Amount", Item_Amt.ToString("#,##0.00"));
 
-                            if (LedgerBalance < Item_Amt)
+                            if (AvailableBalance < Item_Amt)
                             {
-                                LogMessage.WriteLog("ResponseCode", "[" + ResponseCode.AmountExceededLimit + "] เงินคงเหลือไม่เพียงพอ");
+                                LogMessage.WriteLog("ResponseCode", "[" + ResponseCode.AmountExceededLimit + "] Amount Exceeded Limit เงินคงเหลือไม่เพียงพอ");
                                 DataResponse.ResponseCode = ResponseCode.AmountExceededLimit; //เงินคงเหลือไม่เพียงพอ
                                 Result = DataResponse.DataMassage;
                                 return;
                             }
                             else
                             {
-                                DataResponse.Amount3 = AvailableBalance - Item_Amt; //คงเหลือ
+                                DataResponse.Amount3 = LedgerBalance - Item_Amt; //คงเหลือ
                                 //###### ตัดยอด ######
                                 Receive Recv = new Receive();
                                 String System_Code = "02"; //เงินฝาก
@@ -293,6 +295,10 @@ namespace ATMBAY
                             String Loancontract_No = String.Empty;
                             LogMessage.WriteLog("TransactionType", "Cash Withdraw Loan [ถอน(กู้เพิ่ม)เงินกู้แบบเงินสด] ####################");
                             Inq.LoanInquiry(Coop_Id, Member_No, LogMessage, ta);
+                            
+                            Item_Amt = DataRequest.Amount1;
+                            LogMessage.WriteLog("Withdraw Amount", Item_Amt.ToString("#,##0.00"));
+
                             if (Inq.LoanHold == 1 || Inq.AccountHold == 1) //ปิดระบบเงินกู้
                             {
                                 LogMessage.WriteLog("", "HOLD_FLAG = " + Inq.LoanHold.ToString() + " [1 = ปิดระบบเงินกู้], ACCOUNT_HOLD = " + Inq.AccountHold + " [1 = อายัดสัญญาเงินกู้]");
@@ -303,23 +309,21 @@ namespace ATMBAY
                             else
                             {
                                 LogMessage.WriteLog("", "HOLD_FLAG = " + Inq.LoanHold.ToString());
-                                AvailableBalance = Inq.AvailableBalance;//คงเหลือ
-                                LedgerBalance = Inq.LedgerBalance;//ถอนได้
+                                LedgerBalance = Inq.LedgerBalance;//คงเหลือ
+                                AvailableBalance = Inq.AvailableBalance;//ถอนได้
                                 Loancontract_No = Inq.LoancontractNo;
                             }
-                            Item_Amt = DataRequest.Amount1;
-                            LogMessage.WriteLog("Withdraw Amount", Item_Amt.ToString("#,##0.00"));
 
-                            if (LedgerBalance < Item_Amt)
+                            if (AvailableBalance < Item_Amt)
                             {
-                                LogMessage.WriteLog("ResponseCode", "[" + ResponseCode.AmountExceededLimit + "] เงินคงเหลือไม่เพียงพอ");
+                                LogMessage.WriteLog("ResponseCode", "[" + ResponseCode.AmountExceededLimit + "] Amount Exceeded Limit เงินคงเหลือไม่เพียงพอ");
                                 DataResponse.ResponseCode = ResponseCode.AmountExceededLimit; //เงินคงเหลือไม่เพียงพอ
                                 Result = DataResponse.DataMassage;
                                 return;
                             }
                             else
                             {
-                                DataResponse.Amount3 = AvailableBalance - Item_Amt; //คงเหลือ
+                                DataResponse.Amount3 = LedgerBalance - Item_Amt; //คงเหลือ
                                 //###### ตัดยอด ######
                                 Receive Recv = new Receive();
                                 String System_Code = "01"; //เงินกู้
@@ -350,6 +354,10 @@ namespace ATMBAY
                             String Deptaccount_No = String.Empty;
                             LogMessage.WriteLog("TransactionType", "Cash Withdraw Deposit [ถอนเงินฝากแบบโอนเข้าบัญชี] ####################");
                             Inq.DeptInquiry(Coop_Id, Member_No, LogMessage, ta);
+                            
+                            Item_Amt = DataRequest.Amount1;
+                            LogMessage.WriteLog("Withdraw Amount", Item_Amt.ToString("#,##0.00"));
+
                             if (Inq.DeptHold == 1 || Inq.AccountHold == 1) //ปิดระบบเงินฝาก
                             {
                                 LogMessage.WriteLog("", "HOLD_FLAG = " + Inq.DeptHold.ToString() + " [1 = ปิดระบบเงินฝาก], ACCOUNT_HOLD = " + Inq.AccountHold + " [1 = อายัดบัญชีเงินฝาก]");
@@ -360,23 +368,21 @@ namespace ATMBAY
                             else
                             {
                                 LogMessage.WriteLog("", "HOLD_FLAG = " + Inq.DeptHold.ToString());
-                                AvailableBalance = Inq.AvailableBalance;//คงเหลือ
-                                LedgerBalance = Inq.LedgerBalance;//ถอนได้
+                                LedgerBalance = Inq.LedgerBalance;//คงเหลือ
+                                AvailableBalance = Inq.AvailableBalance;//ถอนได้
                                 Deptaccount_No = Inq.DeptaccountNo;
                             }
-                            Item_Amt = DataRequest.Amount1;
-                            LogMessage.WriteLog("Withdraw Amount", Item_Amt.ToString("#,##0.00"));
 
-                            if (LedgerBalance < Item_Amt)
+                            if (AvailableBalance < Item_Amt)
                             {
-                                LogMessage.WriteLog("ResponseCode", "[" + ResponseCode.AmountExceededLimit + "] เงินคงเหลือไม่เพียงพอ");
+                                LogMessage.WriteLog("ResponseCode", "[" + ResponseCode.AmountExceededLimit + "] Amount Exceeded Limit เงินคงเหลือไม่เพียงพอ");
                                 DataResponse.ResponseCode = ResponseCode.AmountExceededLimit; //เงินคงเหลือไม่เพียงพอ
                                 Result = DataResponse.DataMassage;
                                 return;
                             }
                             else
                             {
-                                DataResponse.Amount3 = AvailableBalance - Item_Amt; //คงเหลือ
+                                DataResponse.Amount3 = LedgerBalance - Item_Amt; //คงเหลือ
                                 //###### ตัดยอด ######
                                 Receive Recv = new Receive();
                                 String System_Code = "02"; //เงินฝาก
@@ -389,6 +395,10 @@ namespace ATMBAY
                             String Loancontract_No = String.Empty;
                             LogMessage.WriteLog("TransactionType", "Tranfer Withdraw Loan [ถอน(กู้เพิ่ม)เงินกู้แบบโอน] ####################");
                             Inq.LoanInquiry(Coop_Id, Member_No, LogMessage, ta);
+                            
+                            Item_Amt = DataRequest.Amount1;
+                            LogMessage.WriteLog("Withdraw Amount", Item_Amt.ToString("#,##0.00"));
+
                             if (Inq.LoanHold == 1 || Inq.AccountHold == 1) //ปิดระบบเงินกู้
                             {
                                 LogMessage.WriteLog("", "HOLD_FLAG = " + Inq.LoanHold.ToString() + " [1 = ปิดระบบเงินกู้], ACCOUNT_HOLD = " + Inq.AccountHold + " [1 = อายัดสัญญาเงินกู้]");
@@ -399,23 +409,21 @@ namespace ATMBAY
                             else
                             {
                                 LogMessage.WriteLog("", "HOLD_FLAG = " + Inq.LoanHold.ToString());
-                                AvailableBalance = Inq.AvailableBalance;//คงเหลือ
-                                LedgerBalance = Inq.LedgerBalance;//ถอนได้
+                                LedgerBalance = Inq.LedgerBalance;//คงเหลือ
+                                AvailableBalance = Inq.AvailableBalance;//ถอนได้
                                 Loancontract_No = Inq.LoancontractNo;
                             }
-                            Item_Amt = DataRequest.Amount1;
-                            LogMessage.WriteLog("Withdraw Amount", Item_Amt.ToString("#,##0.00"));
 
-                            if (LedgerBalance < Item_Amt)
+                            if (AvailableBalance < Item_Amt)
                             {
-                                LogMessage.WriteLog("ResponseCode", "[" + ResponseCode.AmountExceededLimit + "] เงินคงเหลือไม่เพียงพอ");
+                                LogMessage.WriteLog("ResponseCode", "[" + ResponseCode.AmountExceededLimit + "] Amount Exceeded Limit เงินคงเหลือไม่เพียงพอ");
                                 DataResponse.ResponseCode = ResponseCode.AmountExceededLimit; //เงินคงเหลือไม่เพียงพอ
                                 Result = DataResponse.DataMassage;
                                 return;
                             }
                             else
                             {
-                                DataResponse.Amount3 = AvailableBalance - Item_Amt; //คงเหลือ
+                                DataResponse.Amount3 = LedgerBalance - Item_Amt; //คงเหลือ
                                 //###### ตัดยอด ######
                                 Receive Recv = new Receive();
                                 String System_Code = "01"; //เงินกู้
@@ -448,6 +456,10 @@ namespace ATMBAY
                             String Deptaccount_No = String.Empty;
                             LogMessage.WriteLog("TransactionType", "Tranfer Deposit [ฝากเงินฝาก] ####################");
                             Inq.DeptInquiry(Coop_Id, Member_No, LogMessage, ta);
+                            
+                            Item_Amt = DataRequest.Amount1;
+                            LogMessage.WriteLog("Deposit Amount", Item_Amt.ToString("#,##0.00"));
+
                             if (Inq.DeptHold == 1 || Inq.AccountHold == 1) //ปิดระบบเงินฝาก
                             {
                                 LogMessage.WriteLog("", "HOLD_FLAG = " + Inq.DeptHold.ToString() + " [1 = ปิดระบบเงินฝาก], ACCOUNT_HOLD = " + Inq.AccountHold + " [1 = อายัดบัญชีเงินฝาก]");
@@ -458,12 +470,11 @@ namespace ATMBAY
                             else
                             {
                                 LogMessage.WriteLog("", "HOLD_FLAG = " + Inq.DeptHold.ToString());
-                                AvailableBalance = Inq.AvailableBalance;//คงเหลือ
-                                LedgerBalance = Inq.LedgerBalance;//ถอนได้
+                                LedgerBalance = Inq.LedgerBalance;//คงเหลือ
+                                AvailableBalance = Inq.AvailableBalance;//ถอนได้
                                 Deptaccount_No = Inq.DeptaccountNo;
                             }
-                            Item_Amt = DataRequest.Amount1;
-                            LogMessage.WriteLog("Deposit Amount", Item_Amt.ToString("#,##0.00"));
+
                             String Sharp = "00000000000000000000";
                             String DeptTranfer = DataRequest.COOPCustomerAC.ToString(Sharp.Substring(0, Deptaccount_No.Length));
                             LogMessage.WriteLog("", "MEMBER_NO = " + Member_No + ", DEPOSIT_TRANFER = " + DeptTranfer + " (ข้อมูลธนาคารฝากเข้าบัญชี)");
@@ -476,7 +487,7 @@ namespace ATMBAY
                             }
                             else
                             {
-                                DataResponse.Amount3 = AvailableBalance + Item_Amt; //คงเหลือ
+                                DataResponse.Amount3 = LedgerBalance + Item_Amt; //คงเหลือ
                                 //###### ตัดยอด ######
                                 String System_Code = "02"; //เงินฝาก
                                 String Operate_Code = "003"; //ประเภทฝาก
@@ -488,6 +499,10 @@ namespace ATMBAY
                             String Loancontract_No = String.Empty;
                             LogMessage.WriteLog("TransactionType", "Tranfer Loan [ชำระเงินกู้] ####################");
                             Inq.LoanInquiry(Coop_Id, Member_No, LogMessage, ta);
+                            
+                            Item_Amt = DataRequest.Amount1;
+                            LogMessage.WriteLog("Payment Amount", Item_Amt.ToString("#,##0.00"));
+
                             if (Inq.LoanHold == 1 || Inq.AccountHold == 1) //ปิดระบบเงินฝาก
                             {
                                 LogMessage.WriteLog("", "HOLD_FLAG = " + Inq.LoanHold.ToString() + " [1 = ปิดระบบเงินกู้], ACCOUNT_HOLD = " + Inq.AccountHold + " [1 = อายัดสัญญาเงินกู้]");
@@ -497,12 +512,11 @@ namespace ATMBAY
                             }
                             else
                             {
-                                AvailableBalance = Inq.AvailableBalance;//คงเหลือ
-                                LedgerBalance = Inq.LedgerBalance;//ถอนได้
+                                LedgerBalance = Inq.LedgerBalance;//คงเหลือ
+                                AvailableBalance = Inq.AvailableBalance;//ถอนได้
                                 Loancontract_No = Inq.LoancontractNo;
                             }
-                            Item_Amt = DataRequest.Amount1;
-                            LogMessage.WriteLog("Payment Amount", Item_Amt.ToString("#,##0.00"));
+
                             String LoanTranfer = DataRequest.COOPCustomerAC.ToString("00000000"); //ใช้อ้างอิงเลขที่ ขั้นต่ำ 10 หลัก โดยหลักการจะให้ใส่เลขที่สัญญาที่จะทำการชำระ
                             LogMessage.WriteLog("", "MEMBER_NO = " + Member_No + " (เลขที่สมาชิกที่ใช้ชำระหนี้)");
                             LogMessage.WriteLog("", "LOANCONTRACT_NO = " + Loancontract_No + " (เลขบัญชีสหกรณ์ที่ผู้ไว้กับสมาชิก)");
@@ -516,7 +530,7 @@ namespace ATMBAY
                             }
                             else
                             {
-                                DataResponse.Amount3 = AvailableBalance + Item_Amt; //คงเหลือ
+                                DataResponse.Amount3 = LedgerBalance + Item_Amt; //คงเหลือ
                                 //###### ตัดยอด ######
                                 String System_Code = "01"; //เงินกู้
                                 String Operate_Code = "003"; //ประเภทชำระหนี้

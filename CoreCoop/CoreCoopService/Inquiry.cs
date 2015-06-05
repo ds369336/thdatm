@@ -175,7 +175,7 @@ namespace CoreCoopService
                     PAY_AMT = dt.GetDecimal("PAY_AMT");
                     SEQUEST_AMT = dt.GetDecimal("SEQUEST_AMT");
                     ACCOUNT_HOLD = dt.GetDecimal("ACCOUNT_HOLD");
-                    LogMessage.WriteLog("", "DEPTACCOUNT_NO = " + DEPTACCOUNT_NO + " , RECEIVE_AMT = " + RECEIVE_AMT.ToString("#,##0.00") + " , PAY_AMT = " + PAY_AMT.ToString("#,##0.00") + " , SEQUEST_AMT = " + SEQUEST_AMT.ToString("#,##0.00") + " , ACCOUNT_HOLD = " + Dept_Hold.ToString("#0"));
+                    LogMessage.WriteLog("", "DEPTACCOUNT_NO = " + DEPTACCOUNT_NO + " , RECEIVE_AMT = " + RECEIVE_AMT.ToString("#,##0.00") + " , PAY_AMT = " + PAY_AMT.ToString("#,##0.00") + " , SEQUEST_AMT = " + SEQUEST_AMT.ToString("#,##0.00") + " , ACCOUNT_HOLD = " + ACCOUNT_HOLD);
                 }
                 String SqlString = "SELECT NVL(DP.PRNCBAL,0) AS LEDGER_AMT, (NVL(DP.PRNCBAL,0) - NVL(DP.SEQUEST_AMOUNT,0) - NVL(DP.CHECKPEND_AMT,0) - NVL(AC.DEPTSEQUEST_AMT,0)) AS AVAILABLE_AMT, AC.DEPT_HOLD AS DEPT_HOLD FROM DPDEPTMASTER DP, ATMCOOP AC WHERE DP.DEPTCLOSE_STATUS = 0 AND TRIM(AC.COOP_FIID) = {0} AND MEMBER_NO = {1} AND DP.DEPTACCOUNT_NO = {2}";
                 SqlString = WebUtil.SQLFormat(SqlString, COOP_FIID, Member_ID, DEPTACCOUNT_NO);
