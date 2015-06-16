@@ -1066,6 +1066,9 @@ namespace ATMAPPTEST
             {
                 StringWriter DataStringWriter = new StringWriter();
                 CultureInfo en = new CultureInfo("en-US");
+
+                //DataStringWriter.WriteLine(GetHeader());
+                //return;
                 //Header
                 String Space = "                                                                                                    ";
                 String REC_TYPE = "0";
@@ -1083,37 +1086,130 @@ namespace ATMAPPTEST
                 RESERVE = "   ";
                 String DATA_TYPE = "1";
                 String FUNCTION = "A";
-                String THAI_NAME = ("ประภาภรณ์ ประจักษ์" + Space).Substring(0, 50);
-                String ENGS_NAME = ("PRAPAPRON PRAJUCK" + Space).Substring(0, 50);
+                String THAI_NAME = ("ประภาภรณ์  ประจักษ์" + Space).Substring(0, 50);
+                String ENGS_NAME = ("PRAPAPORN  PRAJARK" + Space).Substring(0, 50);
                 String SEX = "2";
-                String BIRTH_DATE = "19990101";
+                String BIRTH_DATE = "19841216";
                 String CARD_TYPE = "01";
-                String CARD_NUM = "1470500010444";
+                String CARD_NUM = "1470500010468";
                 String RESERVE2 = Space.Substring(0, 26);
                 String CONTRACT_ADDR = Space.Substring(0, 80);
-                String ACCOUNT_NO = "  00002990";
+                String ACCOUNT_NO = "5401367160";
                 String RESERVE3 = Space.Substring(0, 38);
                 DataStringWriter.WriteLine(REC_TYPE + COOP_TYPE + COOP_CUST + RESERVE + DATA_TYPE + FUNCTION + THAI_NAME + ENGS_NAME + SEX + BIRTH_DATE + CARD_TYPE + CARD_NUM + RESERVE2 + CONTRACT_ADDR + ACCOUNT_NO + RESERVE3);
 
-                DATA_TYPE = "2";
-                String CUST_STATUS = "1";
-                String CUST_EXPDATE = "20991231";
-                String AUTH_INFORMATION = "00000010000" + "00004000000" + "99999" + "00100000000" + "99999" + "01000000000" + "99999" + "03000000000" + "99999" + "00000000000";
-                String DEBT_INFORMATION = Space.Substring(0, 78);
-                String BANK_INFO = Space.Substring(0, 10);
-                RESERVE2 = Space.Substring(0, 95);
-                DataStringWriter.WriteLine(REC_TYPE + COOP_TYPE + COOP_CUST + RESERVE + DATA_TYPE + FUNCTION + CUST_STATUS + CUST_EXPDATE + AUTH_INFORMATION + DEBT_INFORMATION + BANK_INFO + RESERVE2);
+                //DATA_TYPE = "3";
+                //String CUST_STATUS = "1";
+                //String CUST_EXPDATE = "20991231";
+                //String AUTH_INFORMATION = "00000000000" + "99999999999" + "99999" + "99999999999" + "99999" + "99999999999" + "99999" + "99999999999" + "99999" + "99999999999";
+                //String DEBT_INFORMATION = "01000000000" + Space.Substring(0, 67);
+                //String COOP_ACCOUNT = "5401367160";
+                //RESERVE2 = Space.Substring(0, 95);
+                //DataStringWriter.WriteLine(REC_TYPE + COOP_TYPE + COOP_CUST + RESERVE + DATA_TYPE + FUNCTION + CUST_STATUS + CUST_EXPDATE + AUTH_INFORMATION + DEBT_INFORMATION + COOP_ACCOUNT + RESERVE2);
+
+                //DATA_TYPE = "2";
+                //DataStringWriter.WriteLine(REC_TYPE + COOP_TYPE + COOP_CUST + RESERVE + DATA_TYPE + FUNCTION + CUST_STATUS + CUST_EXPDATE + AUTH_INFORMATION + DEBT_INFORMATION + COOP_ACCOUNT + RESERVE2);
+                
+                DATA_TYPE = "5";
+                RESERVE2 = (Space + Space).Substring(0, 130);
+                RESERVE3 = Space.Substring(0, 38);
+                String DEPTACCOUNT_NO = "0000100860";   
+                DataStringWriter.WriteLine(REC_TYPE + COOP_TYPE + COOP_CUST + RESERVE + DATA_TYPE + FUNCTION + THAI_NAME + ENGS_NAME + RESERVE2 + DEPTACCOUNT_NO + RESERVE3);
+
+                DATA_TYPE = "4";
+                String LOANCONTRACT_NO = "0005800003";
+                DataStringWriter.WriteLine(REC_TYPE + COOP_TYPE + COOP_CUST + RESERVE + DATA_TYPE + FUNCTION + THAI_NAME + ENGS_NAME + RESERVE2 + LOANCONTRACT_NO + RESERVE3);
+
+                //REC_TYPE = "1";
+                //String COOP_CUST = "0000003442";
+                //RESERVE = "   ";
+                //String DATA_TYPE = "1";
+                //String FUNCTION = "A";
+                //String THAI_NAME = ("สาวิตรี ชัยมาโย" + Space).Substring(0, 50);
+                //String ENGS_NAME = ("SAVITTRE CHAIMAYO" + Space).Substring(0, 50);
+                //String SEX = "2";
+                //String BIRTH_DATE = "19880110";
+                //String CARD_TYPE = "01";
+                //String CARD_NUM = "1470500044834";
+                //String RESERVE2 = Space.Substring(0, 26);
+                //String CONTRACT_ADDR = Space.Substring(0, 80);
+                //String ACCOUNT_NO = "5401367242";
+                //String RESERVE3 = Space.Substring(0, 38);
+                //DataStringWriter.WriteLine(REC_TYPE + COOP_TYPE + COOP_CUST + RESERVE + DATA_TYPE + FUNCTION + THAI_NAME + ENGS_NAME + SEX + BIRTH_DATE + CARD_TYPE + CARD_NUM + RESERVE2 + CONTRACT_ADDR + ACCOUNT_NO + RESERVE3);
+
+                //DATA_TYPE = "2";
+                //String CUST_STATUS = "1";
+                //String CUST_EXPDATE = "20991231";
+                //String AUTH_INFORMATION = "00000010000" + "00004000000" + "99999" + "00100000000" + "99999" + "01000000000" + "99999" + "03000000000" + "99999" + "00000000000";
+                //String DEBT_INFORMATION = Space.Substring(0, 78);
+                //String BANK_INFO = Space.Substring(0, 10);
+                //RESERVE2 = Space.Substring(0, 95);
+                //DataStringWriter.WriteLine(REC_TYPE + COOP_TYPE + COOP_CUST + RESERVE + DATA_TYPE + FUNCTION + CUST_STATUS + CUST_EXPDATE + AUTH_INFORMATION + DEBT_INFORMATION + BANK_INFO + RESERVE2);
+
+                //DATA_TYPE = "3";
+                //String CUST_STATUS = "1";
+                //String CUST_EXPDATE = "20991231";
+                //String AUTH_INFORMATION = "00000000000" + "99999999999" + "99999" + "99999999999" + "99999" + "99999999999" + "99999" + "99999999999" + "99999" + "99999999999";
+                //String DEBT_INFORMATION = "01000000000" + Space.Substring(0, 67);
+                //String COOP_ACCOUNT = "5401367242";
+                //RESERVE2 = Space.Substring(0, 95);
+                //DataStringWriter.WriteLine(REC_TYPE + COOP_TYPE + COOP_CUST + RESERVE + DATA_TYPE + FUNCTION + CUST_STATUS + CUST_EXPDATE + AUTH_INFORMATION + DEBT_INFORMATION + COOP_ACCOUNT + RESERVE2);
+
+                //DATA_TYPE = "5";
+                //CUST_STATUS = "1";
+                //RESERVE2 = (Space + Space).Substring(0, 130);
+                //RESERVE3 = Space.Substring(0, 38);
+                //String DEPTACCOUNT_NO = "   0100859";
+                //DataStringWriter.WriteLine(REC_TYPE + COOP_TYPE + COOP_CUST + RESERVE + DATA_TYPE + FUNCTION + THAI_NAME + ENGS_NAME + RESERVE2 + DEPTACCOUNT_NO + RESERVE3);
+
+                //COOP_CUST = "0000003720";
+                //DATA_TYPE = "1";
+                //FUNCTION = "C";
+                //THAI_NAME = ("สุพันธ์สา พัดจันทร์หอม" + Space).Substring(0, 50);
+                //ENGS_NAME = ("SUPHANSA PHATJANHORM" + Space).Substring(0, 50);
+                //SEX = "1";
+                //BIRTH_DATE = "19800408";
+                //CARD_TYPE = "01";
+                //CARD_NUM = "3530700392157";
+                //RESERVE2 = Space.Substring(0, 26);
+                //CONTRACT_ADDR = Space.Substring(0, 80);
+                //ACCOUNT_NO = "5401367200";
+                //RESERVE3 = Space.Substring(0, 38);
+                //DataStringWriter.WriteLine(REC_TYPE + COOP_TYPE + COOP_CUST + RESERVE + DATA_TYPE + FUNCTION + THAI_NAME + ENGS_NAME + SEX + BIRTH_DATE + CARD_TYPE + CARD_NUM + RESERVE2 + CONTRACT_ADDR + ACCOUNT_NO + RESERVE3);
+
+                //DATA_TYPE = "3";
+                //CUST_STATUS = "1";
+                //CUST_EXPDATE = "20991231";
+                //AUTH_INFORMATION = "00000000000" + "99999999999" + "99999" + "99999999999" + "99999" + "99999999999" + "99999" + "99999999999" + "99999" + "99999999999";
+                //DEBT_INFORMATION = "01000000000" + Space.Substring(0, 67);
+                //COOP_ACCOUNT = "5401367200";
+                //RESERVE2 = Space.Substring(0, 95);
+                //DataStringWriter.WriteLine(REC_TYPE + COOP_TYPE + COOP_CUST + RESERVE + DATA_TYPE + FUNCTION + CUST_STATUS + CUST_EXPDATE + AUTH_INFORMATION + DEBT_INFORMATION + COOP_ACCOUNT + RESERVE2);
+
+                //DATA_TYPE = "5";
+                //CUST_STATUS = "1";
+                //RESERVE2 = (Space + Space).Substring(0, 130);
+                //DEPTACCOUNT_NO = "0000100964";
+                //RESERVE3 = Space.Substring(0, 38);
+                //DataStringWriter.WriteLine(REC_TYPE + COOP_TYPE + COOP_CUST + RESERVE + DATA_TYPE + FUNCTION + THAI_NAME + ENGS_NAME + RESERVE2 + DEPTACCOUNT_NO + RESERVE3);
+
+                //COOP_CUST = "0000003422";
+                //DATA_TYPE = "0";
+                //FUNCTION = "D";
+                //RESERVE = "   ";
+                //RESERVE3 = (Space + Space + Space).Substring(0, 278);
+                //DataStringWriter.WriteLine(REC_TYPE + COOP_TYPE + COOP_CUST + RESERVE + DATA_TYPE + FUNCTION + RESERVE3);
 
                 //Tailer
                 REC_TYPE = "9";
                 String TOTAL_END = "END";
                 String TOTAL_RECORDS = "000000002";
-                String CUST_LIMIT_AMT = "0000000000000";
-                String OD_PRINCIPAL = "0000000000000";
+                String CUST_LIMIT_AMT = "0000000000000"; //"0099999999999";
+                String OD_PRINCIPAL = "0000000000000"; //"0001000000000";
                 RESERVE = (Space + Space + Space).Substring(0, 261);
                 DataStringWriter.WriteLine(REC_TYPE + TOTAL_END + TOTAL_RECORDS + CUST_LIMIT_AMT + OD_PRINCIPAL + RESERVE);
 
-                File.WriteAllText("C:\\test.txt", DataStringWriter.ToString(), Encoding.Default);
+                File.WriteAllText("C:\\COOP097.txt", DataStringWriter.ToString(), Encoding.Default);
 
             }
             catch (Exception ex)
@@ -1123,20 +1219,23 @@ namespace ATMAPPTEST
             WriteLog("===================================================");
         }
 
+        private String Space = "                                                                                                    ";
         private String COOP_TYPE = "007097";
         private String GetHeader()
         {
             try
             {
+                String Data = String.Empty;
                 CultureInfo en = new CultureInfo("en-US");
-                String Space = "                                                                                                    ";
                 String REC_TYPE = "0";
-                String COOP_ID = "097";
+                String COOP_ID = COOP_TYPE.Substring(COOP_TYPE.Length - 3, 3);
                 String SETTLEMENT_DATE = DateTime.Now.ToString("dd/MM/yyyy", en);
                 String FILE_DESC = "COOP";//35 หลัก
                 FILE_DESC = (FILE_DESC + Space).Substring(0, 35);
                 String RESERVE = (Space + Space + Space).Substring(0, 245);
-                return REC_TYPE + COOP_ID + SETTLEMENT_DATE + FILE_DESC + COOP_TYPE + RESERVE;
+                Data = REC_TYPE + COOP_ID + SETTLEMENT_DATE + FILE_DESC + COOP_TYPE + RESERVE;
+                if (Data.Length != 300) throw new Exception("ข้อมูล Header ไม่เท่ากับ 300 ตัวอักษร (" + Data.Length + ") กรุณาตรวจสอบ");
+                return Data;
             }
             catch (Exception ex)
             {
@@ -1147,27 +1246,33 @@ namespace ATMAPPTEST
         {
             try
             {
-                String Space = "                                                                                                    ";
-                String REC_TYPE = "1";
-                String COOP_CUST = "0000002990";//******************************
-                String RESERVE = "   ";
-                String DATA_TYPE = "1";
-                String FUNCTION = "A";//******************************
-                String THAI_NAME = ("ประภาภรณ์ ประจักษ์" + Space).Substring(0, 50);
-                String ENGS_NAME = ("PRAPAPRON PRAJUCK" + Space).Substring(0, 50);
-                String SEX = "2";//******************************
-                String BIRTH_DATE = "19990101";
-                String CARD_TYPE = "01";
-                String CARD_NUM = "1470500010444";//******************************
-                String RESERVE2 = Space.Substring(0, 26);
-                String CONTRACT_ADDR = Space.Substring(0, 80);
-                String ACCOUNT_NO = "  00002990";//******************************
-                String RESERVE3 = Space.Substring(0, 38);
+                String Data = String.Empty;
+                String SqlString = @"SELECT B.MEMBER_NO, B.DATA_TYPE, B.DELETE_FLAG
+                                     FROM ATMBANKPROCESS A, ATMBANKPROCESSDET B 
+                                     WHERE A.COOP_ID = B.COOP_ID AND
+                                        A.MEMBER_NO = B.MEMBER_NO AND 
+                                        B.PROCESS_FLAG = 8 AND 
+                                        A.COOP_ID = '" + COOP_TYPE + "'";
 
-                String SqlSelect = "SELECT COOP_ID, MEMBER_NO, INFO_FLAG FROM ATMBANKWAITPROCRESS WHERE PROCESS_FLAG <> 1";
+                String MEMBER_NO = "";
+                Decimal DATA_TYPE = 1;
+                Decimal DELETE_FLAG = 0;
 
-                return REC_TYPE + COOP_TYPE + COOP_CUST + RESERVE + DATA_TYPE + FUNCTION + THAI_NAME + ENGS_NAME + SEX + BIRTH_DATE + CARD_TYPE + CARD_NUM + RESERVE2 + CONTRACT_ADDR + ACCOUNT_NO + RESERVE3;
+                switch (DATA_TYPE.ToString())
+                {
+                    case "1":
+                        break;
+                    case "2":
+                        break;
+                    case "3":
+                        break;
+                    case "4":
+                        break;
+                    case "5":
+                        break;
+                }
 
+                return Data;
             }
             catch (Exception ex)
             {
@@ -1192,5 +1297,47 @@ namespace ATMAPPTEST
                 throw ex;
             }
         }
+
+        private String GetInfo(String Member_No, Decimal Delete_Flag)
+        {
+            try
+            {
+                String REC_TYPE = "1";
+                String COOP_CUST = Convert.ToInt32(Member_No).ToString("0000000000");//"0000002990";//******************************
+                String RESERVE = "   ";
+                String DATA_TYPE = "1";
+                String FUNCTION = String.Empty;//******************************
+                Decimal INFO_FLAG = 0;
+                if (Delete_Flag != 1)
+                {
+                    String SqlString = "SELECT INFO_FLAG FROM ATMBANKPROCESS WHERE COOP_ID = '" + COOP_TYPE + "' AND MEMBER_NO = '" + Member_No + "'";
+                    if (INFO_FLAG != 1) FUNCTION = "A";
+                    else FUNCTION = "I";
+                }
+                else
+                {
+                    FUNCTION = "D";
+                }
+
+                String THAI_NAME = ("ประภาภรณ์ ประจักษ์" + Space).Substring(0, 50);
+                String ENGS_NAME = ("PRAPAPRON PRAJUCK" + Space).Substring(0, 50);
+                String SEX = "2";//******************************
+                String BIRTH_DATE = "19990101";
+                String CARD_TYPE = "01";
+                String CARD_NUM = "1470500010444";//******************************
+                String RESERVE2 = Space.Substring(0, 26);
+                String CONTRACT_ADDR = Space.Substring(0, 80);
+                String ACCOUNT_NO = "  00002990";//******************************
+                String RESERVE3 = Space.Substring(0, 38);
+
+                return REC_TYPE + COOP_TYPE + COOP_CUST + RESERVE + DATA_TYPE + FUNCTION + THAI_NAME + ENGS_NAME + SEX + BIRTH_DATE + CARD_TYPE + CARD_NUM + RESERVE2 + CONTRACT_ADDR + ACCOUNT_NO + RESERVE3;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
+
     }
 }

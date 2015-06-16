@@ -47,6 +47,7 @@ namespace CoreCoopService
             {
                 String DESC = Description + "               ";
                 DESC = DESC.Substring(0, 15);
+                // Make Tread แบบไม่ต้องรอ Result
                 WriteLog(DESC + " " + Value);
             }
             catch (Exception ex)

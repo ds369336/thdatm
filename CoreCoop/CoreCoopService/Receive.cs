@@ -46,5 +46,24 @@ namespace CoreCoopService
                 throw ex;
             }
         }
+
+        public void ProcessCancelWithdraw(String MEMBER_NO, String COOP_ID, String ACCOUNT_NO, Decimal ITEM_AMT, DateTime CCS_OPERATE_DATE, String SYSTEM_CODE, String OPERATE_CODE, String CASH_TYPE, String ATM_NO, String ATM_SEQNO, String SAVING_ACC, LogMessage LogMessage, Sta ta)
+        {
+            try
+            {
+                String SqlInsertATMTRANSACTIONCANCEL = @"INSERT INTO ATMTRANSACTIONCANCEL
+                                                     ( MEMBER_NO, COOP_ID, ACCOUNT_NO, CCS_OPERATE_DATE, SYSTEM_CODE, OPERATE_CODE, CASH_TYPE,
+                                                        ITEM_AMT, ATM_NO, ATM_SEQNO, SAVING_ACC )
+                                                  VALUES ( {0}, {1}, {2}, {3}, {4}, {5}, {6}, 
+                                                     {7}, {8}, {9}, {10})";
+                SqlInsertATMTRANSACTIONCANCEL = WebUtil.SQLFormat(SqlInsertATMTRANSACTIONCANCEL, MEMBER_NO, COOP_ID, ACCOUNT_NO, CCS_OPERATE_DATE, SYSTEM_CODE, OPERATE_CODE, CASH_TYPE, ITEM_AMT, ATM_NO, ATM_SEQNO, SAVING_ACC);
+                LogMessage.WriteLog("INSERT TRNCANCEL", SqlInsertATMTRANSACTIONCANCEL);
+                ta.Exe(SqlInsertATMTRANSACTIONCANCEL);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

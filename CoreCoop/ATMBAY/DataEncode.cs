@@ -25,10 +25,10 @@ namespace ATMBAY
         public String TerminalSequenceNo = String.Empty;
         public UInt32 AcquirerTraceNumber = 0;
         public String COOPFIID = String.Empty;
-        public UInt32 COOPCustomerID = 0;
-        public UInt32 COOPCustomerAC = 0;
-        public UInt32 COOPBankAC = 0;
-        public UInt32 COOPCustomerBankAC = 0;
+        public UInt64 COOPCustomerID = 0;
+        public UInt64 COOPCustomerAC = 0;
+        public UInt64 COOPBankAC = 0;
+        public UInt64 COOPCustomerBankAC = 0;
         public String IssuerReference = String.Empty;
         public Decimal Amount1 = 0;
         public Decimal Amount2 = 0;
@@ -94,26 +94,26 @@ namespace ATMBAY
 
                 try
                 {
-                    this.COOPCustomerID = Convert.ToUInt32(DataMessage.Substring(157, 10));
+                    this.COOPCustomerID = Convert.ToUInt64(DataMessage.Substring(157, 10));
                 }
                 catch { this.COOPCustomerID = 0; }
 
                 try
                 {
                     TEMP = DataMessage.Substring(167, 10);
-                    this.COOPCustomerAC = Convert.ToUInt32(DataMessage.Substring(167, 10));
+                    this.COOPCustomerAC = Convert.ToUInt64(DataMessage.Substring(167, 10));
                 }
                 catch (Exception ex) { throw new Exception("8.1 COOPCustomerAC = [" + TEMP + "] " + ex.Message); }
 
                 try
                 {
-                    this.COOPBankAC = Convert.ToUInt32(DataMessage.Substring(177, 10));
+                    this.COOPBankAC = Convert.ToUInt64(DataMessage.Substring(177, 10));
                 }
                 catch { this.COOPBankAC = 0; }
 
                 try
                 {
-                    this.COOPCustomerBankAC = Convert.ToUInt32(DataMessage.Substring(187, 10));
+                    this.COOPCustomerBankAC = Convert.ToUInt64(DataMessage.Substring(187, 10));
                 }
                 catch { this.COOPCustomerBankAC = 0; }
 

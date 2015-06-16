@@ -17,6 +17,7 @@ namespace CoreCoopService
         private String DEPTACCOUNT_NO = String.Empty;
         private String LOANCONTRACT_NO = String.Empty;
 
+
         WebUtility WebUtil = new WebUtility();
 
         public String Member_No
@@ -177,7 +178,7 @@ namespace CoreCoopService
                     ACCOUNT_HOLD = dt.GetDecimal("ACCOUNT_HOLD");
                     LogMessage.WriteLog("", "DEPTACCOUNT_NO = " + DEPTACCOUNT_NO + " , RECEIVE_AMT = " + RECEIVE_AMT.ToString("#,##0.00") + " , PAY_AMT = " + PAY_AMT.ToString("#,##0.00") + " , SEQUEST_AMT = " + SEQUEST_AMT.ToString("#,##0.00") + " , ACCOUNT_HOLD = " + ACCOUNT_HOLD);
                 }
-                String SqlString = "SELECT NVL(DP.PRNCBAL,0) AS LEDGER_AMT, (NVL(DP.PRNCBAL,0) - NVL(DP.SEQUEST_AMOUNT,0) - NVL(DP.CHECKPEND_AMT,0) - NVL(AC.DEPTSEQUEST_AMT,0)) AS AVAILABLE_AMT, AC.DEPT_HOLD AS DEPT_HOLD FROM DPDEPTMASTER DP, ATMCOOP AC WHERE DP.DEPTCLOSE_STATUS = 0 AND TRIM(AC.COOP_FIID) = {0} AND MEMBER_NO = {1} AND DP.DEPTACCOUNT_NO = {2}";
+                String SqlString = "SELECT NVL(DP.PRNCBAL,0) AS LEDGER_AMT, (NVL(DP.PRNCBAL,0) - NVL(DP.SEQUEST_AMOUNT,0) - NVL(DP.CHECKPEND_AMT,0) - NVL(AC.DEPTSEQUEST_AMT,0)) AS AVAILABLE_AMT, AC.DEPT_HOLD AS DEPT_HOLD FROM DPDEPTMASTER DP, ATMCOOP AC WHERE DP.DEPTCLOSE_STATUS = 0 AND TRIM(AC.COOP_ID) = {0} AND MEMBER_NO = {1} AND DP.DEPTACCOUNT_NO = {2}";
                 SqlString = WebUtil.SQLFormat(SqlString, COOP_FIID, Member_ID, DEPTACCOUNT_NO);
                 LogMessage.WriteLog("DeptInquiry SQL", SqlString);
                 dt = ta.Query(SqlString);
@@ -244,7 +245,7 @@ namespace CoreCoopService
                     ACCOUNT_HOLD = dt.GetDecimal("ACCOUNT_HOLD");
                     LogMessage.WriteLog("", "LOANCONTRACT_NO = " + LOANCONTRACT_NO + " , RECEIVE_AMT = " + RECEIVE_AMT.ToString("#,##0.00") + " , PAY_AMT = " + PAY_AMT.ToString("#,##0.00") + " , ACCOUNT_HOLD = " + ACCOUNT_HOLD.ToString("#0"));
                 }
-                String SqlString = "SELECT (NVL(LN.LOANAPPROVE_AMT, 0) - NVL(LN.PRINCIPAL_BALANCE, 0)) AS LEDGER_AMT, (NVL(LN.LOANAPPROVE_AMT, 0) - NVL(LN.PRINCIPAL_BALANCE, 0) - NVL(AC.LOANSEQUEST_AMT,0)) AS AVAILABLE_AMT, AC.LOAN_HOLD AS LOAN_HOLD FROM LNCONTMASTER LN, ATMCOOP AC WHERE LN.CONTRACT_STATUS = 1 AND TRIM(AC.COOP_FIID) = {0} AND LN.MEMBER_NO = {1} AND LN.LOANCONTRACT_NO = {2}";
+                String SqlString = "SELECT (NVL(LN.LOANAPPROVE_AMT, 0) - NVL(LN.PRINCIPAL_BALANCE, 0)) AS LEDGER_AMT, (NVL(LN.LOANAPPROVE_AMT, 0) - NVL(LN.PRINCIPAL_BALANCE, 0) - NVL(AC.LOANSEQUEST_AMT,0)) AS AVAILABLE_AMT, AC.LOAN_HOLD AS LOAN_HOLD FROM LNCONTMASTER LN, ATMCOOP AC WHERE LN.CONTRACT_STATUS = 1 AND TRIM(AC.COOP_ID) = {0} AND LN.MEMBER_NO = {1} AND LN.LOANCONTRACT_NO = {2}";
                 SqlString = WebUtil.SQLFormat(SqlString, COOP_FIID, Member_ID, LOANCONTRACT_NO);
                 LogMessage.WriteLog("LoanInquiry SQL", SqlString);
                 dt = ta.Query(SqlString);
