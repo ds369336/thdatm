@@ -1098,17 +1098,17 @@ namespace ATMAPPTEST
                 String RESERVE3 = Space.Substring(0, 38);
                 DataStringWriter.WriteLine(REC_TYPE + COOP_TYPE + COOP_CUST + RESERVE + DATA_TYPE + FUNCTION + THAI_NAME + ENGS_NAME + SEX + BIRTH_DATE + CARD_TYPE + CARD_NUM + RESERVE2 + CONTRACT_ADDR + ACCOUNT_NO + RESERVE3);
 
-                //DATA_TYPE = "3";
-                //String CUST_STATUS = "1";
-                //String CUST_EXPDATE = "20991231";
-                //String AUTH_INFORMATION = "00000000000" + "99999999999" + "99999" + "99999999999" + "99999" + "99999999999" + "99999" + "99999999999" + "99999" + "99999999999";
-                //String DEBT_INFORMATION = "01000000000" + Space.Substring(0, 67);
-                //String COOP_ACCOUNT = "5401367160";
-                //RESERVE2 = Space.Substring(0, 95);
-                //DataStringWriter.WriteLine(REC_TYPE + COOP_TYPE + COOP_CUST + RESERVE + DATA_TYPE + FUNCTION + CUST_STATUS + CUST_EXPDATE + AUTH_INFORMATION + DEBT_INFORMATION + COOP_ACCOUNT + RESERVE2);
+                DATA_TYPE = "3";
+                String CUST_STATUS = "1";
+                String CUST_EXPDATE = "20991231";
+                String AUTH_INFORMATION = "00000000000" + "99999999999" + "99999" + "99999999999" + "99999" + "99999999999" + "99999" + "99999999999" + "99999" + "99999999999";
+                String DEBT_INFORMATION = "01000000000" + Space.Substring(0, 67);
+                String COOP_ACCOUNT = "5401367160";
+                RESERVE2 = Space.Substring(0, 95);
+                DataStringWriter.WriteLine(REC_TYPE + COOP_TYPE + COOP_CUST + RESERVE + DATA_TYPE + FUNCTION + CUST_STATUS + CUST_EXPDATE + AUTH_INFORMATION + DEBT_INFORMATION + COOP_ACCOUNT + RESERVE2);
 
-                //DATA_TYPE = "2";
-                //DataStringWriter.WriteLine(REC_TYPE + COOP_TYPE + COOP_CUST + RESERVE + DATA_TYPE + FUNCTION + CUST_STATUS + CUST_EXPDATE + AUTH_INFORMATION + DEBT_INFORMATION + COOP_ACCOUNT + RESERVE2);
+                DATA_TYPE = "2";
+                DataStringWriter.WriteLine(REC_TYPE + COOP_TYPE + COOP_CUST + RESERVE + DATA_TYPE + FUNCTION + CUST_STATUS + CUST_EXPDATE + AUTH_INFORMATION + DEBT_INFORMATION + COOP_ACCOUNT + RESERVE2);
                 
                 DATA_TYPE = "5";
                 RESERVE2 = (Space + Space).Substring(0, 130);
@@ -1248,7 +1248,7 @@ namespace ATMAPPTEST
             {
                 String Data = String.Empty;
                 String SqlString = @"SELECT B.MEMBER_NO, B.DATA_TYPE, B.DELETE_FLAG
-                                     FROM ATMBANKPROCESS A, ATMBANKPROCESSDET B 
+                                     FROM ATMBANKPROCESS A, ATMMEMBER B 
                                      WHERE A.COOP_ID = B.COOP_ID AND
                                         A.MEMBER_NO = B.MEMBER_NO AND 
                                         B.PROCESS_FLAG = 8 AND 
@@ -1338,6 +1338,8 @@ namespace ATMAPPTEST
             }
 
         }
+
+
 
     }
 }

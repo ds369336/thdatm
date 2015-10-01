@@ -243,7 +243,7 @@ namespace CoreCoopService
                     PAY_AMT = dt.GetDecimal("PAY_AMT");
                     SEQUEST_AMT = dt.GetDecimal("SEQUEST_AMT");
                     ACCOUNT_HOLD = dt.GetDecimal("ACCOUNT_HOLD");
-                    LogMessage.WriteLog("", "LOANCONTRACT_NO = " + LOANCONTRACT_NO + " , RECEIVE_AMT = " + RECEIVE_AMT.ToString("#,##0.00") + " , PAY_AMT = " + PAY_AMT.ToString("#,##0.00") + " , ACCOUNT_HOLD = " + ACCOUNT_HOLD.ToString("#0"));
+                    LogMessage.WriteLog("", "LOANCONTRACT_NO = " + LOANCONTRACT_NO + " , RECEIVE_AMT = " + RECEIVE_AMT.ToString("#,##0.00") + " , PAY_AMT = " + PAY_AMT.ToString("#,##0.00") + " , ACCOUNT_HOLD = " + ACCOUNT_HOLD.ToString("#0") + " , SEQUEST_AMT = " + SEQUEST_AMT.ToString("#,##0.00"));
                 }
                 String SqlString = "SELECT (NVL(LN.LOANAPPROVE_AMT, 0) - NVL(LN.PRINCIPAL_BALANCE, 0)) AS LEDGER_AMT, (NVL(LN.LOANAPPROVE_AMT, 0) - NVL(LN.PRINCIPAL_BALANCE, 0) - NVL(AC.LOANSEQUEST_AMT,0)) AS AVAILABLE_AMT, AC.LOAN_HOLD AS LOAN_HOLD FROM LNCONTMASTER LN, ATMCOOP AC WHERE LN.CONTRACT_STATUS = 1 AND TRIM(AC.COOP_ID) = {0} AND LN.MEMBER_NO = {1} AND LN.LOANCONTRACT_NO = {2}";
                 SqlString = WebUtil.SQLFormat(SqlString, COOP_FIID, Member_ID, LOANCONTRACT_NO);
@@ -266,7 +266,7 @@ namespace CoreCoopService
                     LogMessage.WriteLog("", "LEDGER_AMT = " + LedgerBal.ToString("#,##0.00") + " , AVAILABLE_AMT = " + AvailableBal.ToString("#,##0.00") + " , LOAN_HOLD = " + Loan_Hold);
 
                     LedgerBal = LedgerBal - RECEIVE_AMT + PAY_AMT;
-                    AvailableBal = AvailableBal - RECEIVE_AMT + PAY_AMT;
+                    AvailableBal = AvailableBal - RECEIVE_AMT + PAY_AMT - SEQUEST_AMT;
                 }
                 LogMessage.WriteLog("", "LedgerBalance = " + LedgerBal.ToString("#,##0.00"));
                 LogMessage.WriteLog("", "AvailableBalance = " + AvailableBal.ToString("#,##0.00"));
