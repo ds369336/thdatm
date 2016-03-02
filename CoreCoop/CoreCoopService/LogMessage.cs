@@ -75,12 +75,13 @@ namespace CoreCoopService
 
         public void WriteErrorLog(String DataMassage)
         {
-            String LogFile_Path = "C:\\AtmCoreCoop\\logsError\\ERROR" + DateTime.Now.ToString("yyyyMMdd") + ".txt";
+            String LogFile_Path = "C:\\AtmCoreCoop\\logsError\\";
             if (!Directory.Exists(LogFile_Path))
             {
                 Directory.CreateDirectory(LogFile_Path);
             }
-            File.AppendAllText(LogFile_Path, DateTime.Now.ToString("yyyyMMdd_HHmmss ", new CultureInfo("en-US")) + DataMassage + "\r\n", Encoding.Default);
+            LogFile_Path += "ERROR" + DateTime.Now.ToString("yyyyMMdd") + ".txt";
+            File.AppendAllText(LogFile_Path, DateTime.Now.ToString("yyyyMMdd_HHmmss ", new CultureInfo("en-US")) + DataMassage + "\r\n", Encoding.UTF8);
         }
     }
 }

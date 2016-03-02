@@ -325,6 +325,13 @@ namespace ATMBAY
                                 Result = DataResponse.DataMassage;
                                 return;
                             }
+                            else if (Item_Amt % 100 != 0)
+                            {
+                                LogMessage.WriteLog("ResponseCode", "[" + ResponseCode.InvalidAmount + "] Invalid Amount ถอนยอดมีเศษไม่ได้ = " + (Item_Amt % 100));
+                                DataResponse.ResponseCode = ResponseCode.InvalidAmount; //เงินคงเหลือไม่เพียงพอ
+                                Result = DataResponse.DataMassage;
+                                return;
+                            }
                             else
                             {
                                 DataResponse.Amount3 = LedgerBalance - Item_Amt; //คงเหลือ
@@ -422,6 +429,13 @@ namespace ATMBAY
                             {
                                 LogMessage.WriteLog("ResponseCode", "[" + ResponseCode.AmountExceededLimit + "] Amount Exceeded Limit เงินคงเหลือไม่เพียงพอ");
                                 DataResponse.ResponseCode = ResponseCode.AmountExceededLimit; //เงินคงเหลือไม่เพียงพอ
+                                Result = DataResponse.DataMassage;
+                                return;
+                            }
+                            else if (Item_Amt % 100 != 0)
+                            {
+                                LogMessage.WriteLog("ResponseCode", "[" + ResponseCode.InvalidAmount + "] Invalid Amount ถอนยอดมีเศษไม่ได้ = " + (Item_Amt % 100));
+                                DataResponse.ResponseCode = ResponseCode.InvalidAmount; //เงินคงเหลือไม่เพียงพอ
                                 Result = DataResponse.DataMassage;
                                 return;
                             }
@@ -701,7 +715,7 @@ namespace ATMBAY
 
                             Item_Amt = DataRequest.Amount1;
                             LogMessage.WriteLog("Withdraw Amount", Item_Amt.ToString("#,##0.00"));
-                            
+
                             SqlGetAccount = "SELECT ACCOUNT_NO FROM ATMTRANSACTION WHERE MEMBER_NO = {0} AND CCS_OPERATE_DATE = {1}";
                             SqlGetAccount = WebUtil.SQLFormat(SqlGetAccount, Member_No, DataRequest.TransactionDateTime);
                             LogMessage.WriteLog("TRANSACTION SQL", SqlGetAccount);
@@ -751,7 +765,7 @@ namespace ATMBAY
 
                             Item_Amt = DataRequest.Amount1;
                             LogMessage.WriteLog("Deposit Amount", Item_Amt.ToString("#,##0.00"));
-                            
+
                             SqlGetAccount = "SELECT ACCOUNT_NO FROM ATMTRANSACTION WHERE MEMBER_NO = {0} AND CCS_OPERATE_DATE = {1}";
                             SqlGetAccount = WebUtil.SQLFormat(SqlGetAccount, Member_No, DataRequest.TransactionDateTime);
                             LogMessage.WriteLog("TRANSACTION SQL", SqlGetAccount);
@@ -781,7 +795,7 @@ namespace ATMBAY
 
                             Item_Amt = DataRequest.Amount1;
                             LogMessage.WriteLog("Payment Amount", Item_Amt.ToString("#,##0.00"));
-                            
+
                             SqlGetAccount = "SELECT ACCOUNT_NO FROM ATMTRANSACTION WHERE MEMBER_NO = {0} AND CCS_OPERATE_DATE = {1}";
                             SqlGetAccount = WebUtil.SQLFormat(SqlGetAccount, Member_No, DataRequest.TransactionDateTime);
                             LogMessage.WriteLog("TRANSACTION SQL", SqlGetAccount);
